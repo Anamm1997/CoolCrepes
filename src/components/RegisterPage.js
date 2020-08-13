@@ -33,11 +33,11 @@ class RegisterPage extends React.Component {
                      <form>
                          <label>
                              Username
-                             <input type="text" name="usernameInput" value={this.state.username} onChange={this.HandleInputChange} />
+                             <input type="text" name="username" value={this.state.username} onChange={this.HandleInputChange} />
                          </label>
                          <label>
                              Password
-                             <input type="password" name="passwordInput" value={this.state.username} onChange={this.HandleInputChange} />
+                             <input type="password" name="password" value={this.state.password} onChange={this.HandleInputChange} />
                          </label>
                      </form>
                         <button onClick={this.RegisterEvent} >Register</button>
