@@ -11,7 +11,7 @@ class HomePage extends React.Component {
         let user = Fire.auth().currentUser;
         if (user) {
             Fire.auth().signOut();
-            console.log("Logout Sucess");
+            alert("Logout Sucess");
         } else {
             alert("No user is Login");
         }
