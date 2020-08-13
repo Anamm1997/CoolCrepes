@@ -10,9 +10,9 @@ class RegisterPage extends React.Component {
         this.submitRegister = this.submitRegister.bind(this);
         this.state = {
             email:"",
-            password:""
+            password:"",
+            message:""
         };
-
     }
 
     handleChange(e) {
@@ -21,15 +21,17 @@ class RegisterPage extends React.Component {
 
     submitRegister(e){
         e.preventDefault();
-        Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{console.log(u)})
-            .catch((error) => {
-            console.log(error.message);
+        Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+            this.setState({message: "Account Created for "+this.state.email});
         })
+            .catch((error) => {
+            this.setState({message: error.message});
+        });
     }    
 
     render() {
         return (
-            <Form className="pageForm">
+            <Form  onSubmit={this.submitRegister.bind(this)} className="pageForm">
             <h1 className="text-center">Register</h1>
             <FormGroup>
             <Label>Email</Label>
@@ -37,11 +39,13 @@ class RegisterPage extends React.Component {
             <Label>Password</Label>
             <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange.bind(this)}/>
             </FormGroup>
-            <Button className="btn-lg btn-block btn-light" 
-            onClick = {this.submitRegister.bind(this)}>Sign Up</Button>
+            <Button type = "submit" className="btn-lg btn-block btn-light" >Sign Up</Button>
+            <p>{ this.state.message }</p>
             </Form>
         );
     }
 }
 
 export default RegisterPage;
+
+
