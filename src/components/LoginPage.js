@@ -26,6 +26,7 @@ class LoginPage extends React.Component {
                console.log(`Login Attempt with username:${this.state.email} and password:${this.state.password}`);
             
         Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+            console.log("Login Sucess")
             this.props.history.push('/home');
         }).catch((error) => {
             this.setState({message: error.message});
