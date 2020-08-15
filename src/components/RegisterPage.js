@@ -47,5 +47,3 @@ class RegisterPage extends React.Component {
 }
 
 export default RegisterPage;
-
-
