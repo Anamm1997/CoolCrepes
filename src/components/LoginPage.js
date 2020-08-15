@@ -1,49 +1,58 @@
 import React from 'react';
- 
+import HomePage from './HomePage';
+import { Link } from 'react-router-dom';
+import Fire from './Fire';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import '../App.css';
+
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
-
+        this.handleChange = this.handleChange.bind(this);
+        this.submitLogin = this.submitLogin.bind(this);
         this.state = {
-            username: "",
-            password: ""
+            email:"",
+            password:"",
+            message:""
         };
-
-        this.HandleInputChange = this.HandleInputChange.bind(this);
     }
 
-    HandleInputChange(event) {
-        const target = event.target;
-    
-        this.setState({
-          [target.name]: target.value
+    handleChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
+    submitLogin(e){
+        e.preventDefault();
+               console.log(`Login Attempt with username:${this.state.email} and password:${this.state.password}`);
+            
+        Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+            console.log("Login Sucess")
+            this.props.history.push('/home');
+        }).catch((error) => {
+            this.setState({message: error.message});
         });
     }
 
-    LoginEvent = () => {
-        const {username, password} = this.state;
-        console.log(`Login Attempt with username:${username} and password:${password}`);
-    }
-
     render() {
-        return (
-            <div>
-                 <h1>LoginPage</h1>
-                 <p>LoginPage body content</p>
-                     <form>
-                         <label>
-                             Username
-                             <input type="text" name="username" value={this.state.username} onChange={this.HandleInputChange} />
-                         </label>
-                         <label>
-                             Password
-                             <input type="password" name="password" value={this.state.password} onChange={this.HandleInputChange} />
-                         </label>
-                     </form>
-                    <button onClick={this.LoginEvent} >Login</button>
-            </div>
-         );
+            return (
+                <Form onSubmit = {this.submitLogin.bind(this)} className="pageForm">
+                <h1 className="text-center">Cool Crepes</h1>
+                <FormGroup>
+                
+                    <Label>Email</Label>
+                    <Input type="email" name = "email"placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+                    <Label>Password</Label>
+                    <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange.bind(this)}/>
+                </FormGroup>
+        
+                <Button type = "submit" className="btn-lg btn-block btn-light mb-3" >Log in</Button>
+                <Link to="/register"> <Button className="btn-lg btn-block btn-light">Sign Up </Button></Link>
+        
+                <p>{ this.state.message }</p>
+
+                </Form>
+        );
     }
 }
- 
+
 export default LoginPage;

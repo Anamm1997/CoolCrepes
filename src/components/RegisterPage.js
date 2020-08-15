@@ -1,49 +1,49 @@
 import React from 'react';
- 
+import Fire from './Fire';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import '../App.css';
+
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
-
+        this.handleChange = this.handleChange.bind(this);
+        this.submitRegister = this.submitRegister.bind(this);
         this.state = {
-            username: "",
-            password: ""
+            email:"",
+            password:"",
+            message:""
         };
-
-        this.HandleInputChange = this.HandleInputChange.bind(this);
     }
 
-    HandleInputChange(event) {
-        const target = event.target;
-    
-        this.setState({
-          [target.name]: target.value
+    handleChange(e) {
+        this.setState({ [e.target.name] : e.target.value });
+    }
+
+    submitRegister(e){
+        e.preventDefault();
+        Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+            this.setState({message: "Account Created for "+this.state.email});
+        })
+            .catch((error) => {
+            this.setState({message: error.message});
         });
-    }
-
-    RegisterEvent = () => {
-        const {username, password} = this.state;
-        console.log(`Register Attempt with username:${username} and password:${password}`);
-    }
+    }    
 
     render() {
         return (
-            <div>
-                 <h1>RegisterPage</h1>
-                 <p>RegisterPage body content</p>
-                     <form>
-                         <label>
-                             Username
-                             <input type="text" name="username" value={this.state.username} onChange={this.HandleInputChange} />
-                         </label>
-                         <label>
-                             Password
-                             <input type="password" name="password" value={this.state.password} onChange={this.HandleInputChange} />
-                         </label>
-                     </form>
-                        <button onClick={this.RegisterEvent} >Register</button>
-            </div>
-         );
+            <Form  onSubmit={this.submitRegister.bind(this)} className="pageForm">
+            <h1 className="text-center">Register</h1>
+            <FormGroup>
+            <Label>Email</Label>
+            <Input type="email" name = "email"placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+            <Label>Password</Label>
+            <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange.bind(this)}/>
+            </FormGroup>
+            <Button type = "submit" className="btn-lg btn-block btn-light" >Sign Up</Button>
+            <p>{ this.state.message }</p>
+            </Form>
+        );
     }
 }
- 
+
 export default RegisterPage;
