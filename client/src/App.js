@@ -14,18 +14,37 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.userToken = {
-      name: "something",
-      id: 125
+    this.userToken = null;
+
+    this.state = {
+      data: null
     };
   }
+
+  componentDidMount() {
+    // Call our fetch function below once the component mounts
+    this.callBackendAPI()
+        .then(res => this.setState({ data: res.express }))
+        .catch(err => console.log(err));
+  }
+
+  callBackendAPI = async () => {
+    const response = await fetch('/express_backend');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  };
+
   render() {
     return (
       <div className="App">
         <BrowserRouter>
           <div>
-            {/* <Navigation userToken={this.userToken}/> */}
-            <Navigation />
+            <div>{this.state.data}</div>
+            <Navigation userToken={this.userToken}/>
             <Switch>
               <Route path="/" component={LogoPage} exact/>
               <Route path="/home" component={HomePage} exact/>
