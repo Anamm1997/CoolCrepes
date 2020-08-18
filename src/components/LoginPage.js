@@ -1,5 +1,4 @@
 import React from 'react';
-import HomePage from './HomePage';
 import { Link } from 'react-router-dom';
 import Fire from './Fire';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
@@ -26,8 +25,8 @@ class LoginPage extends React.Component {
                console.log(`Login Attempt with username:${this.state.email} and password:${this.state.password}`);
             
         Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
-            console.log("Login Sucess")
-            this.props.history.push('/home');
+            console.log("Login Sucess");
+            this.props.history.push('/');
         }).catch((error) => {
             this.setState({message: error.message});
         });
