@@ -8,6 +8,8 @@ import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
 import UserPage from './components/UserPage'
 import CartPage from './components/CartPage'
+import SalesPage from "./components/SalesPage"
+import TrendingPage from "./components/TrendingPage"
 import './App.css';
 
 class App extends React.Component {
@@ -34,6 +36,9 @@ class App extends React.Component {
               <Route path="/cart" component={CartPage} exact/>
               <Route path="/login" component={LoginPage} exact/>
               <Route path="/register" component={RegisterPage} exact/>
+               <Route path="/sale" component={SalesPage} exact/>
+              <Route path="/trending" component={TrendingPage} exact/>
+
             </Switch>
           </div>
         </BrowserRouter>
