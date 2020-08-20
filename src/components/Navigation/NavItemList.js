@@ -1,11 +1,6 @@
 const NavItems = {
     navlinks: [
         {
-            name: "Logo",
-            link: "/",
-            class: "nav-link link-item"
-        },
-        {
             name: "Home",
             link: "/home",
             class: "nav-link link-item"

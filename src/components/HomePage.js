@@ -12,10 +12,10 @@ class HomePage extends React.Component {
         if (user) {
             Fire.auth().signOut();
             alert("Logout Success");
+            this.props.history.push('/');
         } else {
             alert("No user is logged in");
         }
-        this.props.history.push('/');
     }
 
     render() {

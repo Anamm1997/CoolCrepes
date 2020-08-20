@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import LogoPage from './components/Logo';
 import Navigation from './components/Navigation/Navigation'
@@ -49,19 +49,19 @@ class App extends React.Component {
           <div>
             <Navigation userToken={this.state.userToken}/>
             <Switch>
-              <Route path="/" component={LogoPage} exact/>
+              <Redirect from="/" to="/home" />
               <Route path="/home" component={HomePage} exact/>
-              <Route path="/featured" component={FeaturedPage} exact/>
-              <Route path="/product" component={ProductsPage} exact/>
+              <Route path="/featured" component={FeaturedPage}/>
+              <Route path="/product" component={ProductsPage}/>
 
               <Route path="/login" component={LoginPage} exact/>
               <Route path="/register" component={RegisterPage} exact/>
 
-              <Route path="/user" component={UserPage} exact/>
-              <Route path="/cart" component={CartPage} exact/>
-              <Route path="/history" component={UserHistoryPage} exact/>
-              <Route path="/settings" component={UserSettingsPage} exact/>
-              <Route path="/seller" component={SellerPage} exact/>
+              <Route path="/user" component={UserPage}/>
+              <Route path="/cart" component={CartPage}/>
+              <Route path="/history" component={UserHistoryPage}/>
+              <Route path="/settings" component={UserSettingsPage}/>
+              <Route path="/seller" component={SellerPage}/>
             </Switch>
           </div>
         </BrowserRouter>

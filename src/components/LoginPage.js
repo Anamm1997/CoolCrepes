@@ -22,7 +22,6 @@ class LoginPage extends React.Component {
 
     submitLogin(e){
         e.preventDefault();
-               console.log(`Login Attempt with username:${this.state.email} and password:${this.state.password}`);
             
         Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
             console.log("Login Sucess");
@@ -33,6 +32,7 @@ class LoginPage extends React.Component {
     }
 
     render() {
+        const isValid = this.state.email && this.state.password;
             return (
                 <Form onSubmit = {this.submitLogin.bind(this)} className="pageForm">
                 <h1 className="text-center">Cool Crepes</h1>
@@ -44,7 +44,7 @@ class LoginPage extends React.Component {
                     <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange.bind(this)}/>
                 </FormGroup>
         
-                <Button type = "submit" className="btn-lg btn-block btn-light mb-3" >Log in</Button>
+                <Button type = "submit" className="btn-lg btn-block btn-light mb-3" disabled={!isValid}>Log in</Button>
                 <Link to="/register"> <Button className="btn-lg btn-block btn-light">Sign Up </Button></Link>
         
                 <p>{ this.state.message }</p>
