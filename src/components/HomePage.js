@@ -43,7 +43,7 @@ class HomePage extends React.Component {
     }
 
     salesPage(){
-        this.props.history.push('/sale');
+        this.props.history.push('/sales');
     }
 
     featuredPage(){
