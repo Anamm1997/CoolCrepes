@@ -5,6 +5,8 @@ import Navigation from './components/Navigation/Navigation'
 import FeaturedPage from './components/FeaturedPage'
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
+import SalesPage from "./components/SalesPage"
+import TrendingPage from "./components/TrendingPage"
 import UserPage from './components/User/UserPage'
 import CartPage from './components/User/CartPage'
 import UserHistoryPage from './components/User/UserHistoryPage';
@@ -51,10 +53,10 @@ class App extends React.Component {
               <Route path="/" component={HomePage} exact/>
               <Route path="/featured" component={FeaturedPage}/>
               <Route path="/product" component={ProductsPage}/>
-
               <Route path="/login" component={LoginPage} exact/>
               <Route path="/register" component={RegisterPage} exact/>
-
+               <Route path="/sale" component={SalesPage} exact/>
+              <Route path="/trending" component={TrendingPage} exact/>
               <Route path="/user" component={UserPage}/>
               <Route path="/cart" component={CartPage}/>
               <Route path="/history" component={UserHistoryPage}/>
