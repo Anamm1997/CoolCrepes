@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import NavItems from './NavItemList';
-import './Navigation.css'
+import './Navigation.css';
 
 class Navigation extends React.Component {
     render() {
@@ -27,6 +27,9 @@ class Navigation extends React.Component {
                             </li>
                         )
                     })}
+                <li>
+                    <NavLink to="/cart" className="cart"><img src="https://img.icons8.com/nolan/64/favorite-cart.png"/></NavLink>
+                    </li>
                 </ul>
             </div>
         );
