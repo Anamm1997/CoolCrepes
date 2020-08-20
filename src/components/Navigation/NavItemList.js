@@ -26,22 +26,22 @@ const NavItems = {
         {
             name: "Sales",
             link: "/sales",
-            class: "dropdown-item link-item"
+            class: "dropdown-item"
         },
         {
             name: "Cart",
             link: "/cart",
-            class: "dropdown-item link-item"
+            class: "dropdown-item"
         },
         {
             name: "History",
             link: "/history",
-            class: "dropdown-item link-item"
+            class: "dropdown-item"
         },
         {
             name: "Settings",
             link: "/settings",
-            class: "dropdown-item link-item"
+            class: "dropdown-item"
         }
     ]
 };
