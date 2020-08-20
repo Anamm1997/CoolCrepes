@@ -2,7 +2,7 @@ const NavItems = {
     navlinks: [
         {
             name: "Home",
-            link: "/home",
+            link: "/",
             class: "nav-link link-item"
         },
         {

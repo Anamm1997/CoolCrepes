@@ -1,7 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './components/HomePage';
-import LogoPage from './components/Logo';
 import Navigation from './components/Navigation/Navigation'
 import FeaturedPage from './components/FeaturedPage'
 import LoginPage from './components/LoginPage'
@@ -49,8 +48,7 @@ class App extends React.Component {
           <div>
             <Navigation userToken={this.state.userToken}/>
             <Switch>
-              <Redirect from="/" to="/home" />
-              <Route path="/home" component={HomePage} exact/>
+              <Route path="/" component={HomePage} exact/>
               <Route path="/featured" component={FeaturedPage}/>
               <Route path="/product" component={ProductsPage}/>
 
