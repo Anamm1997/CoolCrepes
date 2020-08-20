@@ -55,7 +55,7 @@ class App extends React.Component {
               <Route path="/product" component={ProductsPage}/>
               <Route path="/login" component={LoginPage} exact/>
               <Route path="/register" component={RegisterPage} exact/>
-               <Route path="/sale" component={SalesPage} exact/>
+               <Route path="/sales" component={SalesPage} exact/>
               <Route path="/trending" component={TrendingPage} exact/>
               <Route path="/user" component={UserPage}/>
               <Route path="/cart" component={CartPage}/>
