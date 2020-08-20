@@ -53,10 +53,12 @@ class App extends React.Component {
               <Route path="/" component={HomePage} exact/>
               <Route path="/featured" component={FeaturedPage}/>
               <Route path="/product" component={ProductsPage}/>
-              <Route path="/login" component={LoginPage} exact/>
-              <Route path="/register" component={RegisterPage} exact/>
-               <Route path="/sales" component={SalesPage} exact/>
-              <Route path="/trending" component={TrendingPage} exact/>
+              <Route path="/trending" component={TrendingPage}/>
+
+              <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
+              <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
+
+              <Route path="/sales" component={SalesPage}/>
               <Route path="/user" component={UserPage}/>
               <Route path="/cart" component={CartPage}/>
               <Route path="/history" component={UserHistoryPage}/>

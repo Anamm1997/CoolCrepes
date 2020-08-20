@@ -1,8 +1,7 @@
 import React from 'react';
-import Fire from './Fire';
 
 import {Carousel,CarouselCaption,CarouselItem,CarouselControl,CarouselIndicators,
-        Card, Button, CardImg, CardTitle, CardText, CardDeck,
+        Card, CardImg, CardTitle, CardText, CardDeck,
         CardSubtitle, CardBody} from 'reactstrap';
 //citation for carousel: https://bit.dev/reactstrap/reactstrap/carousel
 const items = [

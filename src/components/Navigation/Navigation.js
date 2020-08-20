@@ -23,7 +23,7 @@ class Navigation extends React.Component {
     render() {
         return (
             <div className="nav-bg navbar navbar-expand-sm navbar-dark bg-dark">
-                <NavLink to="/home" className="navbar-brand">
+                <NavLink to="/" className="navbar-brand">
                     Cool Crepes and Co.
                 </NavLink>
 
