@@ -6,6 +6,16 @@ const NavItems = {
             class: "nav-link link-item"
         },
         {
+            name: "Trending",
+            link: "/trending",
+            class: "nav-link link-item"
+        },
+        {
+            name: "Sales",
+            link: "/sales",
+            class: "nav-link link-item"
+        },
+        {
             name: "Featured",
             link: "/featured",
             class: "nav-link link-item"
@@ -23,11 +33,6 @@ const NavItems = {
     
     ],
     userlinks: [
-        {
-            name: "Sales",
-            link: "/sales",
-            class: "dropdown-item"
-        },
         {
             name: "Cart",
             link: "/cart",
