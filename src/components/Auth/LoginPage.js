@@ -43,16 +43,16 @@ class LoginPage extends React.Component {
                         <Label>Email</Label>
                         <Input type="email" name = "email"placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
                     </FormGroup>
+
                     <FormGroup>
                         <Label>Password</Label>
                         <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange.bind(this)}/>
-                    </FormGroup>
-            
+                    </FormGroup>            
+                    
                     <Button type = "submit" className="btn-lg btn-block btn-light mb-3" disabled={!isValid}>Log in</Button>
                     <Link to="/register"> <Button className="btn-lg btn-block btn-light">Sign Up </Button></Link>
-            
-                    <p>{ this.state.message }</p>
                 </Form>
+                <p>{ this.state.message }</p>
             </>
         );
     }

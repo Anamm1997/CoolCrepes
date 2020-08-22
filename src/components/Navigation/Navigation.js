@@ -14,7 +14,6 @@ class Navigation extends React.Component {
         let user = Fire.auth().currentUser;
         if (user) {
             Fire.auth().signOut();
-            alert("Logout Sucess");
         } else {
             alert("No user is logged in.");
         }

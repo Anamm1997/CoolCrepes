@@ -5,10 +5,14 @@
 
     "user": {
       "$user_id": {
-        ".validate": "newData.hasChildren(['id', 'email', 'firstName', 'lastName', 'address'])",
+        ".validate": "newData.hasChildren(['id', 'email', 'firstName', 'lastName', 'address', 'timeStamp', 'profileURL'])",
       	
+        ".indexOn": ["id", "email"],
+          
         "id": {".validate": "newData.isString()"},
         
+        "profileURL": {".validate": "newData.isString()"},
+
         "email": {".validate": "newData.isString()"},
 
         "firstName": {".validate": "newData.isString()"},
@@ -51,12 +55,16 @@
 
         },
 
+        "timeStamp": {".validate": "newData.val() <= now"},
+        
         "$other": { ".validate": false }
       }
     },
       
     "product": {
       ".validate": "newData.hasChildren(['productName', 'price', 'description', 'discountPercent', 'imageURL', 'rating', 'desertType', 'isSelling', 'isFeatured', 'stockQuantity', 'timeStamp'])",
+      
+      ".indexOn": ["timeStamp"],
       
       "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
         
@@ -93,6 +101,8 @@
     "comment": {
       ".validate": "newData.hasChildren(['userID', 'productID', 'timeStamp'])",
         
+      ".indexOn": ["userID", "productID", "timeStamp"],
+      
       "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
         
       "productID": {".validate": "root.child('product/' + newData.val()).exists()"},
@@ -110,6 +120,8 @@
       
     "purchase": {
       ".validate": "newData.hasChildren(['userID', 'cart', 'totalPrice', 'timeStamp'])",
+        
+      ".indexOn": ["userID", "timeStamp"],
         
       "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
         

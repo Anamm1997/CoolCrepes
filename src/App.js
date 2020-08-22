@@ -9,8 +9,6 @@ import SalesPage from "./components/SalesPage"
 import TrendingPage from "./components/TrendingPage"
 import UserPage from './components/User/UserPage'
 import CartPage from './components/User/CartPage'
-import UserHistoryPage from './components/User/UserHistoryPage';
-import UserSettingsPage from './components/User/UserSettingsPage';
 import SellerPage from './components/User/SellerPage';
 import ProductsPage from './components/Products/ProductsPage';
 import Fire from './components/Fire'
@@ -32,7 +30,8 @@ class App extends React.Component {
     if(user) {
       this.setState({
         userToken: {
-          username: user.displayName
+          username: user.displayName,
+          uid: user.uid
         }
       });
     }
@@ -52,18 +51,18 @@ class App extends React.Component {
             <Switch>
               <Route path="/" component={HomePage} exact/>
               <Route path="/featured" component={FeaturedPage}/>
-              <Route path="/product" component={ProductsPage}/>
+              <Route path="/products" component={ProductsPage}/>
               <Route path="/trending" component={TrendingPage}/>
 
               <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
               <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
 
               <Route path="/sales" component={SalesPage}/>
-              <Route path="/user" component={UserPage}/>
-              <Route path="/cart" component={CartPage}/>
-              <Route path="/history" component={UserHistoryPage}/>
-              <Route path="/settings" component={UserSettingsPage}/>
               <Route path="/seller" component={SellerPage}/>
+
+              <Route path="/user" render={() => <UserPage updateHandler={this.validateUser} userToken={this.state.userToken} />}/>
+              <Route path="/cart" render={() => <CartPage updateHandler={this.validateUser} userToken={this.state.userToken} />}/>
+
             </Switch>
           </div>
         </BrowserRouter>

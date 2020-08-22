@@ -20,6 +20,7 @@ class RegisterPage extends React.Component {
             email:"",
             password:"",
             password2:"",
+            profileURL:"",
             message:""
         };
     }
@@ -44,6 +45,7 @@ class RegisterPage extends React.Component {
     submitUserToDB(createdUser) {
         let newUser = {
             'id': createdUser.user.uid,
+            'profileURL': this.state.profileURL,
             'email': this.state.email,
             'firstName': this.state.firstName,
             'lastName': this.state.lastName,
@@ -56,17 +58,20 @@ class RegisterPage extends React.Component {
             'purchases': [],
             'comments': [],
             'sales': [],
-            'cart': []
+            'cart': [],
+            'timeStamp': Date.now()
         };
 
         Fire.database().ref('user').push(newUser, error => {
             if (error) {
                 console.log("There was an error");
                 console.log(error);
+                
+                // Delete the user from firebase auth if we can't put them in the data base
+                Fire.auth().deleteUser(createdUser.user.uid);
                 this.setState({message: error.message});
             }
             else {
-                console.log(createdUser);
                 this.setState({message: "Account Created for "+this.state.email});
                 this.props.updateHandler();
             }
@@ -75,7 +80,7 @@ class RegisterPage extends React.Component {
     }
 
     render() {
-        const isValid = this.state.email && this.state.password && this.state.password2 && this.state.password === this.state.password2 &&
+        const isValid = this.state.email && this.state.password && this.state.password2 && this.state.password === this.state.password2 && this.state.profileURL &&
                         this.state.firstName && this.state.lastName && this.state.streetName && this.state.state && this.state.zipcode && this.state.city;
         return (
             <>
@@ -137,17 +142,25 @@ class RegisterPage extends React.Component {
                         <Label>Email</Label>
                         <Input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
                     </FormGroup>
+
                     <FormGroup>
                         <Label>Password</Label>
                         <Input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange.bind(this)}/>
                     </FormGroup>
+
                     <FormGroup>
                         <Label>Password</Label>
                         <Input type="password" name="password2" placeholder="Reenter Password" value={this.state.password2} onChange={this.handleChange.bind(this)}/>
                     </FormGroup>
+
+                    <FormGroup> 
+                        <Label>Profile Picture URL</Label>
+                        <Input type="text" name="profileURL" placeholder="Enter URL" value={this.state.profileURL} onChange={this.handleChange.bind(this)} /> 
+                    </FormGroup>
+                    
                     <Button type="submit" className="btn-lg btn-block btn-light" disabled={!isValid}>Sign Up</Button>
-                    <p>{ this.state.message }</p>
                 </Form>
+                <p>{ this.state.message }</p>
             </>
         );
     }
