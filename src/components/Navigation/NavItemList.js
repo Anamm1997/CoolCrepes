@@ -11,6 +11,11 @@ const NavItems = {
             class: "nav-link link-item"
         },
         {
+            name: "Add Product",
+            link: "/add",
+            class: "nav-link link-item"
+        },
+        {
             name: "Login",
             link: "/login",
             class: "nav-link btn btn-info btn-lg"
@@ -20,7 +25,7 @@ const NavItems = {
             link: "/register",
             class: "nav-link btn btn-success btn-lg"
         }
-    
+
     ],
     userlinks: [
         {
