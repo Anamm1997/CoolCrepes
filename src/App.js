@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Navigation from './components/Navigation/Navigation'
 import FeaturedPage from './components/FeaturedPage'
-import LoginPage from './components/LoginPage'
-import RegisterPage from './components/RegisterPage'
+import LoginPage from './components/Auth/LoginPage'
+import RegisterPage from './components/Auth/RegisterPage'
 import SalesPage from "./components/SalesPage"
 import TrendingPage from "./components/TrendingPage"
 import UserPage from './components/User/UserPage'
@@ -32,7 +32,7 @@ class App extends React.Component {
     if(user) {
       this.setState({
         userToken: {
-          username: user.email
+          username: user.displayName
         }
       });
     }
