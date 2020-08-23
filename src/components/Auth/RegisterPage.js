@@ -2,14 +2,16 @@ import React from 'react';
 import Fire from '../Fire';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import '../../App.css';
-import { Redirect } from 'react-router-dom';
 import StateNames from './StateNames'
+import { Redirect } from 'react-router-dom';
 
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.handleImageUpload = this.handleImageUpload.bind(this);
         this.submitRegister = this.submitRegister.bind(this);
+        this.UploadImageToStorage = this.uploadImageToStorage.bind(this);
         this.state = {
             firstName:"",
             lastName:"",
@@ -20,13 +22,17 @@ class RegisterPage extends React.Component {
             email:"",
             password:"",
             password2:"",
-            profileURL:"",
+            image: "",
             message:""
         };
     }
 
     handleChange(e) {
         this.setState({ [e.target.name] : e.target.value });
+    }
+
+    handleImageUpload(e) {
+        this.setState({ [e.target.name]: e.target.files[0] });
     }
 
     submitRegister(e){
@@ -36,16 +42,20 @@ class RegisterPage extends React.Component {
                 displayName: this.state.firstName
             });
             this.submitUserToDB(u);
+
+
         })
         .catch((error) => {
             this.setState({message: error.message});
         });
     }  
     
-    submitUserToDB(createdUser) {
+    async submitUserToDB(createdUser) {
+        let profileURL = await this.uploadImageToStorage();
+
         let newUser = {
             'id': createdUser.user.uid,
-            'profileURL': this.state.profileURL,
+            'profileURL': profileURL,
             'email': this.state.email,
             'firstName': this.state.firstName,
             'lastName': this.state.lastName,
@@ -69,23 +79,43 @@ class RegisterPage extends React.Component {
                 
                 // Delete the user from firebase auth if we can't put them in the data base
                 Fire.auth().deleteUser(createdUser.user.uid);
-                this.setState({message: error.message});
+                this.setState({
+                    ...this.state, 
+                    message: error.message
+                });
             }
             else {
-                this.setState({message: "Account Created for "+this.state.email});
+                this.setState({
+                    ...this.state,
+                    message: "Account Created for " + this.state.email
+                });
                 this.props.updateHandler();
             }
         });
         
     }
 
+    async uploadImageToStorage() {
+        let image = this.state.image;
+        if (image === "") {
+            // default profile picture
+            return "gs://coolcrepe-d97ac.appspot.com/profileImages/blue-user-profile-icon.png";
+        }
+
+        console.log(image);
+        const uploadTask = await Fire.storage().ref(`/profileImages/${image.name}`).put(image);
+        console.log(uploadTask);
+
+        return await Fire.storage().ref('profileImages').child(image.name).getDownloadURL();
+    }
+
     render() {
-        const isValid = this.state.email && this.state.password && this.state.password2 && this.state.password === this.state.password2 && this.state.profileURL &&
+        const isValid = this.state.email && this.state.password && this.state.password2 && this.state.password === this.state.password2 &&
                         this.state.firstName && this.state.lastName && this.state.streetName && this.state.state && this.state.zipcode && this.state.city;
         return (
             <>
-                {this.props.userToken && <Redirect to="/" />}
-
+                {this.state.message === "Account Created for " + this.state.email && this.props.userToken && <Redirect to="/" />}
+                
                 <Form  onSubmit={this.submitRegister.bind(this)} className="pageForm">
                     <h1 className="text-center">Register</h1>
                     <div className="row">
@@ -154,10 +184,12 @@ class RegisterPage extends React.Component {
                     </FormGroup>
 
                     <FormGroup> 
-                        <Label>Profile Picture URL</Label>
-                        <Input type="text" name="profileURL" placeholder="Enter URL" value={this.state.profileURL} onChange={this.handleChange.bind(this)} /> 
+                        <div className="custom-file">
+                            <input type="file" className="custom-file-input" name="image" onChange={this.handleImageUpload.bind(this)} />
+                            <label className="custom-file-label">Profile Picture (optional)</label>
+                        </div>
                     </FormGroup>
-                    
+
                     <Button type="submit" className="btn-lg btn-block btn-light" disabled={!isValid}>Sign Up</Button>
                 </Form>
                 <p>{ this.state.message }</p>
