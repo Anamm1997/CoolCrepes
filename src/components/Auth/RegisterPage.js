@@ -2,14 +2,14 @@ import React from 'react';
 import Fire from '../Fire';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import '../../App.css';
-import StateNames from './StateNames'
+import StateNames from '../Shared/StateNames'
 import { Redirect } from 'react-router-dom';
+import acceptableFileTypes from '../Shared/AcceptableTypes';
 
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.handleImageUpload = this.handleImageUpload.bind(this);
         this.submitRegister = this.submitRegister.bind(this);
         this.UploadImageToStorage = this.uploadImageToStorage.bind(this);
         this.state = {
@@ -28,11 +28,20 @@ class RegisterPage extends React.Component {
     }
 
     handleChange(e) {
-        this.setState({ [e.target.name] : e.target.value });
-    }
-
-    handleImageUpload(e) {
-        this.setState({ [e.target.name]: e.target.files[0] });
+        if(e.target.name === 'image') {
+            if(!acceptableFileTypes.includes(e.target.files[0].type)) {
+                this.setState({
+                    image: "",
+                    message: "Invalid upload, please select another image (png or jpeg)"
+                });
+            }
+            else {
+                this.setState({ image: e.target.files[0]} );
+            }
+        }
+        else {
+            this.setState({ [e.target.name] : e.target.value });
+        }
     }
 
     submitRegister(e){
@@ -79,16 +88,10 @@ class RegisterPage extends React.Component {
                 
                 // Delete the user from firebase auth if we can't put them in the data base
                 Fire.auth().deleteUser(createdUser.user.uid);
-                this.setState({
-                    ...this.state, 
-                    message: error.message
-                });
+                this.setState({ message: error.message });
             }
             else {
-                this.setState({
-                    ...this.state,
-                    message: "Account Created for " + this.state.email
-                });
+                this.setState({ message: "Account Created for " + this.state.email });
                 this.props.updateHandler();
             }
         });
@@ -114,21 +117,21 @@ class RegisterPage extends React.Component {
                         this.state.firstName && this.state.lastName && this.state.streetName && this.state.state && this.state.zipcode && this.state.city;
         return (
             <>
-                {this.state.message === "Account Created for " + this.state.email && this.props.userToken && <Redirect to="/" />}
+                {this.props.userToken && <Redirect to="/" />}
                 
-                <Form  onSubmit={this.submitRegister.bind(this)} className="pageForm">
+                <Form  onSubmit={this.submitRegister} className="pageForm">
                     <h1 className="text-center">Register</h1>
                     <div className="row">
                         <div className="col">
                             <FormGroup>
                                 <Label>First Name</Label>
-                                <Input type="text" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange.bind(this)}/>
+                                <Input type="text" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange}/>
                             </FormGroup>
                         </div>
                         <div className="col">
                             <FormGroup>
                                 <Label>Last Name</Label>
-                                <Input type="text" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange.bind(this)}/>
+                                <Input type="text" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange}/>
                             </FormGroup>
                         </div>
                     </div>
@@ -137,13 +140,13 @@ class RegisterPage extends React.Component {
                         <div className="col col-sm-8">
                             <FormGroup>
                                 <Label>Address</Label>
-                                <Input type="text" name="streetName" placeholder="Address" value={this.state.streetName} onChange={this.handleChange.bind(this)}/>
+                                <Input type="text" name="streetName" placeholder="Address" value={this.state.streetName} onChange={this.handleChange}/>
                             </FormGroup>
                         </div>
                         <div className="col col-sm-4">
                             <FormGroup>
                                 <Label>Zip</Label>
-                                <Input type="text" name="zipcode" placeholder="Zipcode" value={this.state.zipcode} onChange={this.handleChange.bind(this)}/>
+                                <Input type="text" name="zipcode" placeholder="Zipcode" value={this.state.zipcode} onChange={this.handleChange}/>
                             </FormGroup>
                         </div>
                     </div>
@@ -152,13 +155,13 @@ class RegisterPage extends React.Component {
                         <div className="col">
                             <FormGroup>
                                 <Label>City</Label>
-                                <Input type="text" name="city" placeholder="City" value={this.state.city} onChange={this.handleChange.bind(this)}/>
+                                <Input type="text" name="city" placeholder="City" value={this.state.city} onChange={this.handleChange}/>
                             </FormGroup>
                         </div>
                         <div className="col">
                             <FormGroup>
                                 <Label>State</Label>
-                                <select name="state" className="custom-select" value={this.state.state} onChange={this.handleChange.bind(this)}>
+                                <select name="state" className="custom-select" value={this.state.state} onChange={this.handleChange}>
                                     <option value="" disabled> Select State</option>
                                     {Object.keys(StateNames).map(stateIndex => {
                                         return <option value={stateIndex} key={stateIndex}>{StateNames[stateIndex]}</option>;
@@ -170,23 +173,23 @@ class RegisterPage extends React.Component {
 
                     <FormGroup>
                         <Label>Email</Label>
-                        <Input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+                        <Input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange}/>
                     </FormGroup>
 
                     <FormGroup>
                         <Label>Password</Label>
-                        <Input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+                        <Input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange}/>
                     </FormGroup>
 
                     <FormGroup>
                         <Label>Password</Label>
-                        <Input type="password" name="password2" placeholder="Reenter Password" value={this.state.password2} onChange={this.handleChange.bind(this)}/>
+                        <Input type="password" name="password2" placeholder="Reenter Password" value={this.state.password2} onChange={this.handleChange}/>
                     </FormGroup>
 
                     <FormGroup> 
                         <div className="custom-file">
-                            <input type="file" className="custom-file-input" name="image" onChange={this.handleImageUpload.bind(this)} />
-                            <label className="custom-file-label">Profile Picture (optional)</label>
+                            <input type="file" className="custom-file-input" name="image" onChange={this.handleChange} />
+                            <label className="custom-file-label">Profile Picture (Optional)</label>
                         </div>
                     </FormGroup>
 

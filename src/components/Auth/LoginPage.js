@@ -37,16 +37,16 @@ class LoginPage extends React.Component {
             <> 
                 {this.props.userToken && <Redirect to="/" />}
 
-                <Form onSubmit = {this.submitLogin.bind(this)} className="pageForm">
+                <Form onSubmit = {this.submitLogin} className="pageForm">
                     <h1 className="text-center">Cool Crepes</h1>
                     <FormGroup>
                         <Label>Email</Label>
-                        <Input type="email" name = "email"placeholder="Email" value={this.state.email} onChange={this.handleChange.bind(this)}/>
+                        <Input type="email" name = "email"placeholder="Email" value={this.state.email} onChange={this.handleChange}/>
                     </FormGroup>
 
                     <FormGroup>
                         <Label>Password</Label>
-                        <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange.bind(this)}/>
+                        <Input type="password" name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange}/>
                     </FormGroup>            
                     
                     <Button type = "submit" className="btn-lg btn-block btn-light mb-3" disabled={!isValid}>Log in</Button>
