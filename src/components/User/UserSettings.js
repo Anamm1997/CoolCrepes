@@ -4,16 +4,20 @@ import StateNames from '../Shared/StateNames';
 
 
 function UserSetting(props) {
-    const isValid = props.user.editing && props.user.editing && props.user.email && props.user.firstName && props.user.lastName && 
-                    props.user.address.streetName && props.user.address.state && props.user.address.zipcode && props.user.address.city;
+    const isUserInputValid = props.user.editing && props.user.editing && props.user.email && props.user.firstName && props.user.lastName && 
+                            props.user.address.streetName && props.user.address.state && props.user.address.zipcode && props.user.address.city;
+
+
     return (
         <>
 
             <Form  onSubmit={props.submitUpdate} className="pageForm">
                 <h1 className="text-center">User Settings</h1>
-                <Button className="btn-lg btn-block btn-light" onClick={props.toggleEditing}>
-                    {props.user.editing ? 'Disable' : 'Enable'} Editing
-                </Button>
+                <FormGroup>
+                    <Button className="btn-lg btn-block btn-info" onClick={props.toggleEditing}>
+                        {props.user.editing ? 'Disable' : 'Enable'} Editing
+                    </Button>
+                </FormGroup>
                 <div className="row">
                     <div className="col">
                         <FormGroup>
@@ -74,10 +78,9 @@ function UserSetting(props) {
                         <input type="file" className="custom-file-input" name="image" onChange={props.handleChange} disabled={!props.user.editing} />
                         <label className="custom-file-label">Profile Picture (optional)</label>
                     </div>
-                    <img src={props.user.profileURL} alt="Profile" className="img-thumbnail rounded mx-auto d-block"/>
                 </FormGroup>
 
-                <Button type="submit" className="btn-lg btn-block btn-primary" disabled={!isValid}>Update Profile</Button>
+                <Button type="submit" className="btn-lg btn-block btn-primary" disabled={!isUserInputValid}>Update Profile</Button>
             </Form>
             <p>{ props.user.message }</p>
         </>

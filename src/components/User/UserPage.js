@@ -37,6 +37,7 @@ class UserPage extends React.Component {
             editing: false,
             selectedPanel: "settings"
         };
+
         this.submitUpdate = this.submitUpdate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.toggleEditing = this.toggleEditing.bind(this);
@@ -62,46 +63,75 @@ class UserPage extends React.Component {
 
     toggleEditing() {
         if (this.state.editing) {
-            this.setState({ editing: false });
+            this.resetUserInfo();    
         }
-        else {
-            this.setState({ editing: true });
-        }
+        this.setState({ editing: !this.state.editing });
     }
 
     changeSelectedPanel(e) {
         this.setState({ selectedPanel: e.target.name });
     }
 
-    submitUpdate(e){
+    async submitUpdate(e){
         e.preventDefault();
-        this.setState({message: "Submitted"});
-        // Fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
-        //     u.user.updateProfile({
-        //         displayName: this.state.firstName
-        //     });
-        //     this.submitUserToDB(u);
+        let updatedUserData = {
+            'id': this.state.id,
+            'profileURL': await this.uploadImageToStorage(),
+            'email': this.state.email,
+            'firstName': this.state.firstName,
+            'lastName': this.state.lastName,
+            'address': this.state.address,
+            'purchases': this.state.purchases,
+            'comments': this.state.comments,
+            'sales': this.state.sales,
+            'cart': this.state.cart,
+            'timeStamp': this.state.timeStamp
+        };
+        
+        Fire.database().ref(`user/${this.userID}`).update(updatedUserData, error => {
+            if(error) {
+                this.setState({ message: error.message });
+            }
+            else {
+                Fire.auth().currentUser.updateProfile({
+                    displayName: this.state.firstName
+                });
 
+                this.setState({ 
+                    image: '', 
+                    message: 'Profile Updated',
+                    editing: false
+                });
+            }
+        });
+    }
 
-        // })
-        // .catch((error) => {
-        //     this.setState({message: error.message});
-        // });
+    async uploadImageToStorage() {
+        if (this.state.image === "") {
+            // default profile picture
+            return this.state.profileURL;
+        }
+        await Fire.storage().ref(`/profileImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
+
+        return await Fire.storage().ref('profileImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
     }
 
     componentDidMount() {
         if(!this.props.userToken)
             return;
 
-        this.userRef = Fire.database().ref("user").orderByChild("id").equalTo(this.props.userToken.uid).ref;
-        this.userRef.on('value', snapshot => {
-            this.userID = Object.keys(snapshot.val())
+        this.resetUserInfo();
+    }
+
+    resetUserInfo() {
+        Fire.database().ref("user").orderByChild("id").equalTo(this.props.userToken.uid).ref.on('value', snapshot => {
+            this.userID = Object.keys(snapshot.val());
             snapshot.forEach(data => {
                 this.setState({...data.val()});
             });
         });
-
     }
+    
 
     render() {
         return (
@@ -132,7 +162,7 @@ class UserPage extends React.Component {
                         <div className="col col-sm-10">
                             {
                                 this.state.selectedPanel === 'settings' ? 
-                                    <UserSetting user={this.state} handleChange={this.handleChange} toggleEditing={this.toggleEditing}/> :
+                                    <UserSetting user={this.state} handleChange={this.handleChange} toggleEditing={this.toggleEditing} submitUpdate={this.submitUpdate}/> :
                                     <h3>{this.state.selectedPanel} not implemented</h3>
                             }
                         </div>

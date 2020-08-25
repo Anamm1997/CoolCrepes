@@ -35,7 +35,7 @@ class LoginPage extends React.Component {
         const isValid = this.state.email && this.state.password;
         return (
             <> 
-                {this.props.userToken && <Redirect to="/" />}
+                {this.props.userToken && <Redirect to='/' /> }
 
                 <Form onSubmit = {this.submitLogin} className="pageForm">
                     <h1 className="text-center">Cool Crepes</h1>

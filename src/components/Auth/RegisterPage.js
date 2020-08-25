@@ -99,17 +99,14 @@ class RegisterPage extends React.Component {
     }
 
     async uploadImageToStorage() {
-        let image = this.state.image;
-        if (image === "") {
+        if (this.state.image === "") {
             // default profile picture
-            return "gs://coolcrepe-d97ac.appspot.com/profileImages/blue-user-profile-icon.png";
+            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e";
         }
 
-        console.log(image);
-        const uploadTask = await Fire.storage().ref(`/profileImages/${image.name}`).put(image);
-        console.log(uploadTask);
+        await Fire.storage().ref(`/profileImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
 
-        return await Fire.storage().ref('profileImages').child(image.name).getDownloadURL();
+        return await Fire.storage().ref('profileImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
     }
 
     render() {
@@ -182,8 +179,8 @@ class RegisterPage extends React.Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Label>Password</Label>
-                        <Input type="password" name="password2" placeholder="Reenter Password" value={this.state.password2} onChange={this.handleChange}/>
+                        <Label>Confirm Password</Label>
+                        <Input type="password" name="password2" placeholder="Confirm Password" value={this.state.password2} onChange={this.handleChange}/>
                     </FormGroup>
 
                     <FormGroup> 
