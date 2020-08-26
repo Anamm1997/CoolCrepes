@@ -16,6 +16,11 @@ const NavItems = {
             class: "nav-link link-item"
         },
         {
+            name: "Product",
+            link: "/product",
+            class: "nav-link link-item"
+        },
+        {
             name: "Login",
             link: "/login",
             class: "nav-link btn btn-info btn-lg"

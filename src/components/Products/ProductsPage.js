@@ -1,9 +1,16 @@
 import React from 'react';
 //import CSS page
 import Fire from '../Fire';
+//import * as admin from firebase-admin;
 
-//Import Admin SDK
+/*/Import Admin SDK
 var admin = require('firebase-admin');
+try {
+    admin.initializeApp();
+} catch(error) {
+    //TODO: ignoring until firebase-functions fix released
+    console.log('Initialize not working.');
+}
 
 //Get a database reference to our posts
 var db = admin.database()
@@ -14,7 +21,7 @@ ref.on('value', function(snapshot) {
 	console.log(snapshot.val());
 }, function(errorObject) {
 	console.log('The read failed: ' + errorObject.code);
-});
+});*/
 
 class ProductsPage extends React.Component {
 	constructor(props) {
@@ -31,6 +38,7 @@ class ProductsPage extends React.Component {
 
 	//Learn react here to determine how to interact with page, display table, instead of standard HTML and JS.
     render() {
+    	console.log(Fire.database().ref('test').on());
         return (
             <div>
                <h1>ProductsPage</h1>
