@@ -28,7 +28,6 @@ class UserPage extends React.Component {
     constructor(props) {
         super(props);
         this.userRef = null;
-        this.userID = "";
 
         this.state = {          
             ...initialUser,
@@ -88,7 +87,7 @@ class UserPage extends React.Component {
             'timeStamp': this.state.timeStamp
         };
         
-        Fire.database().ref(`user/${this.userID}`).update(updatedUserData, error => {
+        Fire.database().ref(`user/${this.props.userToken.id}`).update(updatedUserData, error => {
             if(error) {
                 this.setState({ message: error.message });
             }
@@ -124,11 +123,8 @@ class UserPage extends React.Component {
     }
 
     resetUserInfo() {
-        Fire.database().ref("user").orderByChild("id").equalTo(this.props.userToken.uid).ref.on('value', snapshot => {
-            this.userID = Object.keys(snapshot.val());
-            snapshot.forEach(data => {
-                this.setState({...data.val()});
-            });
+        Fire.database().ref(`user/${this.props.userToken.id}`).once('value', snapshot => {
+            this.setState({...snapshot.val()});
         });
     }
     

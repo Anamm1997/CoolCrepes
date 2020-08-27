@@ -31,9 +31,10 @@ class App extends React.Component {
       this.setState({
         userToken: {
           username: user.displayName,
-          uid: user.uid
+          id: ''
         }
       });
+      this.getUserObjectId(user.uid)
     }
     else {
       this.setState({
@@ -41,10 +42,20 @@ class App extends React.Component {
       });
     }
   }
+
+  getUserObjectId(uid) {
+    Fire.database().ref("user").orderByChild("id").equalTo(uid).ref.once('value', snapshot => {
+      this.setState({ userToken: {...this.state.userToken, id: Object.keys(snapshot.val())[0] } });
+    });
+  }
+
+  componentDidMount() {
+    this.validateUser();
+  }
   
   render() {
     return (
-      <div className="App" onLoad={this.validateUser}>
+      <div className="App">
         <BrowserRouter>
           <div>
             <Navigation userToken={this.state.userToken}/>

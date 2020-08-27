@@ -87,7 +87,7 @@ class RegisterPage extends React.Component {
                 console.log(error);
                 
                 // Delete the user from firebase auth if we can't put them in the data base
-                Fire.auth().deleteUser(createdUser.user.uid);
+                Fire.auth().currentUser.delete();
                 this.setState({ message: error.message });
             }
             else {
@@ -104,9 +104,14 @@ class RegisterPage extends React.Component {
             return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e";
         }
 
-        await Fire.storage().ref(`/profileImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
-
-        return await Fire.storage().ref('profileImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
+        try {            
+            await Fire.storage().ref(`/profileImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
+    
+            return await Fire.storage().ref('profileImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
+        } catch (error) {
+            console.log(error);
+            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e"; 
+        }
     }
 
     render() {
