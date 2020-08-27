@@ -14,6 +14,30 @@
     transition: all 0.2s ease-out;
 }
 
+.branding {
+    color: white;
+    text-decoration: none;
+    justify-self: start;
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.cart {
+    color:white;
+    margin-top: 0.5rem;
+    vertical-align:bottom;
+}
+
+.cart:hover {
+    text-decoration: none;
+    color:white;
+    padding: 0rem 0.5rem 0.5em;
+    outline-style: solid;
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+}
+
 .user-dropdown:hover {
     background-color: #ff006a;
     border-radius: 4px;

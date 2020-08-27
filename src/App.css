@@ -32,6 +32,16 @@
     color: white;
 }
 
+.removeItem{
+    color: black
+}
+
+.img-thumbnail{
+    width: 36vh; 
+    height: 200px !important;
+    object-fit: cover;
+}
+
 .App {
     text-align: center;
 }
