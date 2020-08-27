@@ -22,6 +22,14 @@ ref.on('value', function(snapshot) {
 }, function(errorObject) {
 	console.log('The read failed: ' + errorObject.code);
 });*/
+class Square extends React.Component {
+  	constructor(props) {
+   		super(props);
+    	this.state = {
+      		value: null,
+    	};
+	}
+}
 
 class ProductsPage extends React.Component {
 	constructor(props) {
@@ -35,15 +43,26 @@ class ProductsPage extends React.Component {
 	}
 
 	//What method to grab data from database?
+	retrieve() {
+		Fire.database().ref('test').on('value', function(snapshot) {
+			console.log(snapshot);
+		});
+	}
+
+	renderSquare(i) {
+    	return <Square value={i} />;
+  	}
 
 	//Learn react here to determine how to interact with page, display table, instead of standard HTML and JS.
     render() {
-    	console.log(Fire.database().ref('test').on());
+    	this.retrieve();
         return (
             <div>
                <h1>ProductsPage</h1>
-                <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initilized filtering through the query params.</p>
+                <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initialized filtering through the query params.</p>
                 <table id='products'></table>
+                <label>Product Name <input className="ProductName"type="text" placeholder="Type Product Here" /></label>
+                <Square value={1}/>
             </div>
          );
     }
