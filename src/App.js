@@ -5,6 +5,7 @@ import Navigation from './components/Navigation/Navigation'
 import FeaturedPage from './components/FeaturedPage'
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
+import AddProductPage from './components/AddProductPage'
 import SalesPage from "./components/SalesPage"
 import TrendingPage from "./components/TrendingPage"
 import UserPage from './components/User/UserPage'
@@ -19,9 +20,9 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      userToken: null   
+      userToken: null
     }
 
     this.validateUser = this.validateUser.bind(this);
@@ -42,7 +43,7 @@ class App extends React.Component {
       });
     }
   }
-  
+
   render() {
     return (
       <div className="App" onLoad={this.validateUser}>
@@ -57,7 +58,7 @@ class App extends React.Component {
 
               <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
               <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
-
+              <Route path="/add" component={AddProductPage} exact/>
               <Route path="/sales" component={SalesPage}/>
               <Route path="/user" component={UserPage}/>
               <Route path="/cart" component={CartPage}/>
