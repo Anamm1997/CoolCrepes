@@ -51,8 +51,8 @@ class LoginPage extends React.Component {
                     
                     <Button type = "submit" className="btn-lg btn-block btn-light mb-3" disabled={!isValid}>Log in</Button>
                     <Link to="/register"> <Button className="btn-lg btn-block btn-light">Sign Up </Button></Link>
+                    <p>{ this.state.message }</p>
                 </Form>
-                <p>{ this.state.message }</p>
             </>
         );
     }

@@ -117,6 +117,8 @@ class RegisterPage extends React.Component {
     render() {
         const isValid = this.state.email && this.state.password && this.state.password2 && this.state.password === this.state.password2 &&
                         this.state.firstName && this.state.lastName && this.state.streetName && this.state.state && this.state.zipcode && this.state.city;
+
+        const passwordNotMatching = this.state.password && this.state.password2 && this.state.password !== this.state.password2;
         return (
             <>
                 {this.props.userToken && <Redirect to="/" />}
@@ -186,6 +188,7 @@ class RegisterPage extends React.Component {
                     <FormGroup>
                         <Label>Confirm Password</Label>
                         <Input type="password" name="password2" placeholder="Confirm Password" value={this.state.password2} onChange={this.handleChange}/>
+                        {passwordNotMatching && <small className="text-danger">Password does not match.</small>}
                     </FormGroup>
 
                     <FormGroup> 
@@ -196,8 +199,8 @@ class RegisterPage extends React.Component {
                     </FormGroup>
 
                     <Button type="submit" className="btn-lg btn-block btn-light" disabled={!isValid}>Sign Up</Button>
+                    <p>{ this.state.message }</p>
                 </Form>
-                <p>{ this.state.message }</p>
             </>
         );
     }
