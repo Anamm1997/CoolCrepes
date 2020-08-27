@@ -23,18 +23,16 @@
     font-size: 1.5rem;
 }
 
-.cartImg{
-    height: 6vh;
-}
-
-.cart > h{
+.cart {
     color:white;
-    padding-right: 0.5rem
+    margin-top: 0.5rem;
+    vertical-align:bottom;
 }
 
 .cart:hover {
+    text-decoration: none;
     color:white;
-    padding: 1.1rem 0.5rem;
+    padding: 0rem 0.5rem 0.5em;
     outline-style: solid;
     border-radius: 4px;
     transition: all 0.2s ease-out;
