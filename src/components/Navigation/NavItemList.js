@@ -39,7 +39,6 @@ const NavItems = {
     ],
     userlinks: [
         {
-<<<<<<< HEAD
             name: "User",
             link: "/user",
             class: "dropdown-item"
@@ -50,8 +49,6 @@ const NavItems = {
             class: "dropdown-item"
         },
         {
-=======
->>>>>>> master
             name: "Cart",
             link: "/cart",
             class: "dropdown-item"
