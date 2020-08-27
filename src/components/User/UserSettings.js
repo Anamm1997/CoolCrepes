@@ -11,7 +11,7 @@ function UserSetting(props) {
     return (
         <>
 
-            <Form  onSubmit={props.submitUpdate} className="pageForm">
+            <Form  onSubmit={props.submitUpdate} className="registerForm">
                 <h1 className="text-center">User Settings</h1>
                 <FormGroup>
                     <Button className="btn-lg btn-block btn-info" onClick={props.toggleEditing}>
