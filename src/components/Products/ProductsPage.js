@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 //import CSS page
 import Fire from '../Fire';
 //import * as admin from firebase-admin;
@@ -22,6 +23,7 @@ ref.on('value', function(snapshot) {
 }, function(errorObject) {
 	console.log('The read failed: ' + errorObject.code);
 });*/
+
 class Square extends React.Component {
   	constructor(props) {
    		super(props);
@@ -56,6 +58,7 @@ class ProductsPage extends React.Component {
 
 	//What method to grab data from database?
 	retrieve() {
+		var productArray = new Array();
 		Fire.database().ref('productTest').on('value', function(snapshot) {
 			var pastries = snapshot.val();
 			var keys = Object.keys(pastries);
@@ -67,9 +70,27 @@ class ProductsPage extends React.Component {
 				var product = pastries[k].product;
 				var quantity = pastries[k].quantity;
 				var seller = pastries[k].seller;
-				console.log(product, price, quantity, seller, description);
+				let item  = {  //?
+					product, price, quantity, seller, description
+				};
+				productArray.push(item);
 			}
+			//console.log(productArray)
+			//{productArray.map((item,index)=>{return(<li>item</li>)})};
+			//this.setState({productArray});
+			//const element = (
+    		//	<div>
+      		//		<h1>Hello, world!</h1>
+      		//		<h2>productArray</h2>
+    		//	</div>
+  			//);
+			//ReactDOM.render(
+			//	element,
+			//	document.getElementById('root')
+			//)
 		});
+		return productArray;
+		//return productArray.map((item) => <li>{item}</li>);
 	}
 
 	renderSquare(i) {
@@ -78,15 +99,47 @@ class ProductsPage extends React.Component {
 
 	//Learn react here to determine how to interact with page, display table, instead of standard HTML and JS.
     render() {
-    	this.retrieve();
+    	let data = this.retrieve();
+    	console.log(data) //NOT AN ARRAY. "Indices" are keys.
+    	//var pastries = data.val();
+		//var keys = Object.keys(pastries);
+    	//c/onsole.log(pastries);
+    	//console.log(keys);
+    	//console.log(data[0].price);
+    	//for loop - loop through data
+    	//for (item in data) {
+    	//	console.log(item);
+    	//}
+    	//create element 
+    	//append to existing table or div...
+    	//const items = data.map((item) =>
+        //<li key={item.product}>{item.description}</li>
         return (
-            <div>
-               <h1>ProductsPage</h1>
-                <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initialized filtering through the query params.</p>
-                
-            </div>
-         );
+        	<React.Fragment>
+            	<div>
+               	<h1>ProductsPage</h1>
+                	<p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initialized filtering through the query params.</p>
+            	</div>
+       			this.retrieve()
+            </React.Fragment>
+       	);
     }
 }
+
+//<p> <textarea className = "Description" type="text" value={this.state.description} onChange={this.retrieve().bind(this)} /> </p>
+/*
+const listItems = data.map((property) =>
+    		<li>{property}</li>
+    	);
+    	ReactDOM.render(
+  			<ul>{listItems}</ul>,
+  			document.getElementById('root')
+		);
+<ul>{listItems}</ul>
+
+<ul>
+    				{items}
+				</ul>
+*/
  
 export default ProductsPage;
