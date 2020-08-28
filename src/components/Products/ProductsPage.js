@@ -27,11 +27,6 @@ class ProductsPage extends React.Component {
 		super(props);
 		//methods
     this.retrieve = this.retrieve.bind(this);
-
-	}
-
-	//What method to grab data from database?
-	retrieve() {
 		Fire.database().ref('productTest').on('value', function(snapshot) {
 			var pastries = snapshot.val();
 			var keys = Object.keys(pastries);
@@ -43,12 +38,17 @@ class ProductsPage extends React.Component {
 				var product = pastries[k].product;
 				var quantity = pastries[k].quantity;
 				var seller = pastries[k].seller;
-        let data = {
+        var data = {
           product, price, quantity, seller, description
         }
-        console.log(data)
 			}
+			console.log(data)
 		})
+
+	}
+
+	//What method to grab data from database?
+	retrieve() {
     return 'data'
 	}
 
@@ -64,8 +64,11 @@ class ProductsPage extends React.Component {
 
                 <button onClick={()=>{ this.retrieve() }}> Button does nothing </button>
                 {this.retrieve()}
-            </div>
 
+            </div>
+						<div>
+								<label className ='information'> hi</label>
+						</div>
           </React.Fragment>
          );
     }
