@@ -42,6 +42,10 @@
     object-fit: cover;
 }
 
+.modalheaderAddtoCart {
+  color: #099700;
+}
+
 .App {
     text-align: center;
 }
