@@ -11,7 +11,8 @@ class AddProductPage extends React.Component {
       this.handleQuantityChange = this.handleQuantityChange.bind(this);
       this.handleSellerChange = this.handleSellerChange.bind(this);
       this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-      this.ExtractInfo = this.ExtractInfo.bind(this);
+      this.extractInfo = this.extractInfo.bind(this);
+
 
       this.state={
         Product:"",
@@ -38,26 +39,29 @@ class AddProductPage extends React.Component {
       this.setState({Description: e.target.value})
     }
 
-    ExtractInfo(){
+
+
+    extractInfo(){ //Also sends to firebase
       let Product = this.state.Product
       let Price = this.state.Price
       let Quantity = this.state.Quantity
       let Seller = this.state.Seller
       let Description = this.state.Description
       console.log(Product, Price, Quantity, Seller, Description)
-      Fire.database().ref('test').set(
-        {
-          product: Product,
-          price: Price,
-          quantity: Quantity,
-          seller: Seller,
-          description: Description
-        }
-      ).then(() => {
-        console.log("inserted")
+      let data = {
+        product: Product,
+        price: Price,
+        quantity: Quantity,
+        seller: Seller,
+        description: Description
+      }
+      Fire.database().ref('productTest').push(data)
+      .then(() => {
+        console.log(data)
       }).catch((error) => {
         console.log(error)
       })
+
     }
 
 
@@ -71,7 +75,7 @@ class AddProductPage extends React.Component {
               <label>Quantity <input className = "Quantity" type="text" placeholder="Number Available" value={this.state.quantity} onChange={this.handleQuantityChange.bind(this)} /></label>
               <label>Seller <input className = "Seller" type="text" placeholder="Name" value={this.state.seller} onChange={this.handleSellerChange.bind(this)} /></label>
               <label>Description <textarea className = "Description" type="text" placeholder="Description of Product" value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} /></label> {/*//textarea for multiple lines since description is going to be longer*/}
-              <label><button onClick={()=>{ this.ExtractInfo() }}> Add </button> </label>
+              <label><button onClick={()=>{ this.extractInfo() }}> Add </button> </label>
             </div>
           </React.Fragment>
 

@@ -22,36 +22,12 @@ ref.on('value', function(snapshot) {
 }, function(errorObject) {
 	console.log('The read failed: ' + errorObject.code);
 });*/
-class Square extends React.Component {
-  	constructor(props) {
-   		super(props);
-    	this.state = {
-      		value: null,
-    	};
-	}
-
-	render() {
-    	return (
-      		<button
-        		className="square"
-        		onClick={() => this.setState({value: 'X'})}
-      		>
-        	{this.state.value}
-      		</button>
-    	);
-  	}
-}
-
-
 class ProductsPage extends React.Component {
 	constructor(props) {
 		super(props);
 		//methods
+    this.retrieve = this.retrieve.bind(this);
 
-		this.state={
-			Product:"",
-			Price:""
-		}
 	}
 
 	//What method to grab data from database?
@@ -67,26 +43,32 @@ class ProductsPage extends React.Component {
 				var product = pastries[k].product;
 				var quantity = pastries[k].quantity;
 				var seller = pastries[k].seller;
-				console.log(product, price, quantity, seller, description);
+        let data = {
+          product, price, quantity, seller, description
+        }
+        console.log(data)
 			}
-		});
+		})
+    return 'data'
 	}
 
-	renderSquare(i) {
-    	return <Square value={i} />;
-  	}
+
 
 	//Learn react here to determine how to interact with page, display table, instead of standard HTML and JS.
     render() {
-    	this.retrieve();
         return (
+          <React.Fragment>
             <div>
                <h1>ProductsPage</h1>
                 <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initialized filtering through the query params.</p>
-                
+
+                <button onClick={()=>{ this.retrieve() }}> Button does nothing </button>
+                {this.retrieve()}
             </div>
+
+          </React.Fragment>
          );
     }
 }
- 
+
 export default ProductsPage;
