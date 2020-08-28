@@ -29,7 +29,19 @@ class Square extends React.Component {
       		value: null,
     	};
 	}
+
+	render() {
+    	return (
+      		<button
+        		className="square"
+        		onClick={() => this.setState({value: 'X'})}
+      		>
+        	{this.state.value}
+      		</button>
+    	);
+  	}
 }
+
 
 class ProductsPage extends React.Component {
 	constructor(props) {
@@ -44,8 +56,19 @@ class ProductsPage extends React.Component {
 
 	//What method to grab data from database?
 	retrieve() {
-		Fire.database().ref('test').on('value', function(snapshot) {
-			console.log(snapshot);
+		Fire.database().ref('productTest').on('value', function(snapshot) {
+			var pastries = snapshot.val();
+			var keys = Object.keys(pastries);
+
+			for (var i = 0; i < keys.length; i++) {
+				var k = keys[i];
+				var description = pastries[k].description;
+				var price = pastries[k].price;
+				var product = pastries[k].product;
+				var quantity = pastries[k].quantity;
+				var seller = pastries[k].seller;
+				console.log(product, price, quantity, seller, description);
+			}
 		});
 	}
 
@@ -60,9 +83,7 @@ class ProductsPage extends React.Component {
             <div>
                <h1>ProductsPage</h1>
                 <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initialized filtering through the query params.</p>
-                <table id='products'></table>
-                <label>Product Name <input className="ProductName"type="text" placeholder="Type Product Here" /></label>
-                <Square value={1}/>
+                
             </div>
          );
     }
