@@ -1,7 +1,145 @@
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
-    ".read": false,
-    ".write": false
+    ".read": true,
+    ".write": true,
+
+    "user": {
+      "$user_id": {
+        ".validate": "newData.hasChildren(['id', 'email', 'firstName', 'lastName', 'address', 'timeStamp', 'profileURL'])",
+      	
+        ".indexOn": ["id", "email"],
+          
+        "id": {".validate": "newData.isString()"},
+        
+        "profileURL": {".validate": "newData.isString()"},
+
+        "email": {".validate": "newData.isString()"},
+
+        "firstName": {".validate": "newData.isString()"},
+        "lastName": {".validate": "newData.isString()"},
+
+        "address": {
+          ".validate": "newData.hasChildren(['streetName', 'zipcode', 'city', 'state'])",
+          "streetName": {".validate": "newData.isString()"},
+          "zipcode": {".validate": "newData.isString()"},
+          "city": {".validate": "newData.isString()"},
+          "state": {".validate": "newData.isString()"},
+          "$other": { ".validate": false }
+        },
+
+        "purchases": {
+          "$purchase_id": {
+            ".validate": "root.child('purchase/' + newData.val()).exists()"
+          }
+        },
+
+        "comments": {
+          "$comment_id": {
+            ".validate": "root.child('comment/' + newData.val()).exists()"
+          }
+        },
+
+        "sales": {
+          "$sale_id": {
+            ".validate": "root.child('product/' + newData.val()).exists()"
+          }
+        },
+
+        "cart": {
+          "$cart_id": {
+            ".validate": "newData.hasChildren(['productID', 'quantity'])",
+            "productID": {".validate": "root.child('product/' + newData.val()).exists()"},
+            "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
+            "$other": { ".validate": false }
+          }
+
+        },
+
+        "timeStamp": {".validate": "newData.val() <= now"},
+        
+        "$other": { ".validate": false }
+      }
+    },
+      
+    "product": {
+      ".validate": "newData.hasChildren(['productName', 'price', 'description', 'discountPercent', 'imageURL', 'rating', 'desertType', 'isSelling', 'isFeatured', 'stockQuantity', 'timeStamp'])",
+      
+      ".indexOn": ["timeStamp"],
+      
+      "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
+        
+      "price": {".validate": "newData.isNumber() && newData.val() > 0"},
+        
+      "description": {".validate": "newData.isString() && newData.val().length <= 256"},
+        
+      "discountPercent": {".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 1"},
+        
+      "imageURL": {".validate": "newData.isString()"},
+        
+      "comments": {".validate": true},
+        
+      "rating": {
+        ".validate": "newData.hasChildren(['cumulativeRating', 'numberOfVotes'])",
+        "cumulativeRating": {".validate": "newData.isNumber() && newData.val() <= 0"},
+        "numberOfVotes": {".validate": "newData.isNumber() && newData.val() <= 0"},
+      	"$other": { ".validate": false }
+      },
+        
+      "desertType": {".validate": "newData.isString()"},
+        
+      "isSelling": {".validate": "newData.isBoolean()"},
+        
+      "isFeatured": {".validate": "newData.isBoolean()"},
+        
+      "stockQuantity": {".validate": "newData.isNumber() && newData.val() >= 0"},
+      
+      "timeStamp": {".validate": "newData.val() <= now"},
+        
+      "$other": { ".validate": false }
+    },
+      
+    "comment": {
+      ".validate": "newData.hasChildren(['userID', 'productID', 'timeStamp'])",
+        
+      ".indexOn": ["userID", "productID", "timeStamp"],
+      
+      "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
+        
+      "productID": {".validate": "root.child('product/' + newData.val()).exists()"},
+        
+      "replys": {
+        "$reply_id": {
+          ".validate": "root.child('comment/' + newData.val()).exists()"
+        }
+      },
+      
+      "timeStamp": {".validate": "newData.val() <= now"},
+        
+      "$other": { ".validate": false }
+    },
+      
+    "purchase": {
+      ".validate": "newData.hasChildren(['userID', 'cart', 'totalPrice', 'timeStamp'])",
+        
+      ".indexOn": ["userID", "timeStamp"],
+        
+      "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
+        
+			"cart": {
+        "$cart_id": {
+          ".validate": "newData.hasChildren(['productID', 'quantity', 'discount'])",
+          "productID": {".validate": "root.child('product/' + newData.val()).exists()"},
+          "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
+          "discount": {".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 1"},
+          "$other": { ".validate": false }
+        }
+      },
+        
+      "totalPrice": {".validate": "newData.isNumber() && newData.val() <= 0"},
+      
+      "timeStamp": {".validate": "newData.val() <= now"},
+        
+      "$other": { ".validate": false }
+    }
   }
 }
