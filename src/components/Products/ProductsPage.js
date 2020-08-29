@@ -1,5 +1,4 @@
 import React from 'react';
-//import CSS page
 import Fire from '../Fire';
 import { Table } from 'reactstrap';
 
@@ -17,7 +16,6 @@ class ProductsPage extends React.Component {
         this.componentDidMount()
     }
     
-	//What method to grab data from database?
 	componentDidMount() {
         let list = []
 		Fire.database().ref('productTest').on('value', function(snapshot) {
@@ -93,9 +91,11 @@ class ProductsPage extends React.Component {
          );
     }
 }
-/*
+
+/*Alternative way to access data
 <div>
 <p>{item} {item.product} {item.price}</p>
  </div>
 */
+
 export default ProductsPage;
