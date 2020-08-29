@@ -105,26 +105,26 @@ class HomePage extends React.Component {
             <br/><br/>
 
             <CardDeck>
-            <Card tag="a" onClick = {this.trendingPage.bind(this)}>
-            <CardImg src="https://i.ytimg.com/vi/3Jz4cqxPv7w/maxresdefault.jpg" />
-                <CardBody>
-                <CardTitle>Trending Now</CardTitle>
+            <Card className="cardHoverGradientColor" tag="a" onClick = {this.trendingPage.bind(this)}>
+            <CardImg className = "cardImage" src="https://i.ytimg.com/vi/3Jz4cqxPv7w/maxresdefault.jpg" />
+                <CardBody className="cardBodyHoverGradientColor">
+                <CardTitle className="cardTitle">Trending Now</CardTitle>
 <CardSubtitle>What many customers love!</CardSubtitle>
 <CardText>Starting from $10.99</CardText>
 </CardBody>
 </Card>
-<Card tag="a" onClick = {this.salesPage.bind(this)}>
-    <CardImg src="https://media.gq.com/photos/5ef6590ff0469a259eb99c15/3:2/w_1686,h_1124,c_limit/july-4-day-sales.jpg"/>
-        <CardBody>
-        <CardTitle>On Sale</CardTitle>
+<Card className="cardHoverGradientColor" tag="a" onClick = {this.salesPage.bind(this)}>
+    <CardImg className = "cardImage" src="https://media.gq.com/photos/5ef6590ff0469a259eb99c15/3:2/w_1686,h_1124,c_limit/july-4-day-sales.jpg"/>
+        <CardBody className="cardBodyHoverGradientColor">
+        <CardTitle className="cardTitle">On Sale</CardTitle>
 <CardSubtitle>Shop now for lowest price!</CardSubtitle>
 <CardText>Starting from $0.99</CardText>
 </CardBody>
 </Card>
-<Card tag="a" onClick = {this.featuredPage.bind(this)}>
-    <CardImg src="https://grapee.jp/en/wp-content/uploads/sub1-203.jpg" />
-        <CardBody>
-        <CardTitle>Featured or New Arrivals</CardTitle>
+<Card className="cardHoverGradientColor" tag="a" onClick = {this.featuredPage.bind(this)}>
+    <CardImg className = "cardImage" src="https://grapee.jp/en/wp-content/uploads/sub1-203.jpg" />
+        <CardBody className="cardBodyHoverGradientColor">
+        <CardTitle className="cardTitle">Featured or New Arrivals</CardTitle>
 <CardSubtitle>Newest and delicious!</CardSubtitle>
 <CardText>Starting from $5.99</CardText>
 </CardBody>

@@ -112,10 +112,10 @@ class CartPage extends React.Component {
 
             </tbody>
 </Table>
-<Card tag="a" onClick={this.checkout.bind(this)} className="col-lg-3 h-25 d-inline-block" style={{marginTop: "1.2%",padding:"0px"}}>
-    <CardBody>
+<Card tag="a" onClick={this.checkout.bind(this)} className="cardHoverGradientColor col-lg-3 h-25 d-inline-block" style={{marginTop: "1.2%",padding:"0px"}}>
+    <CardBody className="cardBodyHoverGradientColor">
     <h3>Total : TotalCost</h3>
-<CardTitle>Checkout</CardTitle>
+<CardTitle className="cardTitle">Checkout</CardTitle>
 </CardBody>
 </Card>
 </div>
