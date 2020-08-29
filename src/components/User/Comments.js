@@ -1,12 +1,10 @@
 import React from 'react';
 import Fire from '../Fire';
+import CommentPanel from './CommentPanel';
 
 class Comments extends React.Component{
     constructor(props) {
         super(props);
-        this.user = '-MFTSBN1m1w_IzeQAnOZ';
-        this.product = '-MFn-pgAHccnS8E5b_iC';
-        
 
         this.commentRef = Fire.database().ref('commentTest');
         this.productRef = Fire.database().ref('productTest');
@@ -19,19 +17,23 @@ class Comments extends React.Component{
 
         this.createComment = this.createComment.bind(this);
         this.loadComments = this.loadComments.bind(this);
-        this.getUserInfo = this.getUserInfo.bind(this);
-        this.getProductInfo = this.getProductInfo.bind(this);
         this.sortComments = this.sortComments.bind(this);
-        this.loadReplys = this.loadReplys.bind(this);
+        this.loadReplysHandler = this.loadReplysHandler.bind(this);
     }
 
     createComment() {
         let randNum = Math.floor(Math.random() * 100);
         let comment = {
             text: `Some Comment #${randNum}`,
-            userID: this.user,
-            productID: this.product,
-            replys: [],
+            userID: '-MFTSBN1m1w_IzeQAnOZ',
+            userName: 'Mahfuz Anam',
+            profileURL: "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Fanamm9510%40gmail.comicon_mountain.png?alt=media&token=b706ac65-a6c2-43e4-babc-cb585daa1a82",
+            productID: '-MFn-pgAHccnS8E5b_iC',
+            productName: "Pinapple",
+            replys: [
+                '-MFvSh6TzU_wAk7CxFne',
+                '-MFvSvnIcMRdwZ6ZDMqy'
+            ],
             timeStamp: Date.now()
         }
 
@@ -44,12 +46,30 @@ class Comments extends React.Component{
             }
         })
 
-        console.log(newComment);
+        console.log(newComment.path.pieces_[1]);
     }
 
-    async loadReplys(index, id) {
-        console.log(this.state.comments[index]);
-        console.log(id);
+    async loadReplysHandler(index, id) {
+        console.log(this.state.comments[index]);  
+    }
+
+    async retriveReplys(replys) {
+        if (!replys)
+            return []
+        
+        let replyComments = [];
+        for(let i = 0; i < replys.length; i++) {
+            let snapshot = await this.commentRef.child(replys[i]).once('value');
+            let data = snapshot.val();
+            if (data) {
+                if (data.replys) {
+                    data['replyComments'] = await this.retriveReplys(data.replys);
+                }
+
+                replyComments.push(data);
+            }
+        }
+        return replyComments;
     }
 
     async loadComments(snapshot) {
@@ -63,9 +83,10 @@ class Comments extends React.Component{
                     id: key
                 });
             }
-            
-            await this.getUserInfo(comments);
-            await this.getProductInfo(comments);
+
+            for (let i = 0; i < comments.length; i++) {
+                comments[i]['replyComments'] = await this.retriveReplys(comments[i].replys);
+            }
 
             this.setState({
                 comments: comments
@@ -75,32 +96,6 @@ class Comments extends React.Component{
             this.setState({ message: 'Error in reading database.'});
         }
 
-    }
-
-    async getUserInfo(comments) {
-        for (let i = 0; i < comments.length; i++) {
-            let snapshot = await this.userRef.child(comments[i].userID).once('value');
-            let data = snapshot.val();
-            
-            if (data) {
-                comments[i].profileURL =  data.profileURL;
-                comments[i].userName = `${data.firstName} ${data.lastName}`;
-            }else {
-                comments[i].profileURL =  '';
-                comments[i].userName = 'Name Not Found';
-            }
-        }
-    }
-
-    async getProductInfo(comments) {
-        for (let i = 0; i < comments.length; i++) {
-            let snapshot = await this.productRef.child(comments[i].productID).once('value');
-            if (snapshot.val()) {
-                comments[i].productName = snapshot.val().product;
-            }else {
-                comments[i].productName = 'Product Not Found';
-            }
-        }
     }
 
     sortByProducts(data) {
@@ -163,34 +158,17 @@ class Comments extends React.Component{
                         <button className="btn btn-primary" onClick={this.createComment}>Ceate Comment</button>
                     </div>
                     <div>
-                        {this.state.comments.map((comment, index) => {
-                            return (
-                            <div className="card" key={comment.id}>
-                                <div className="row no-gutter">
-                                    <div className="col col-sm-4">
-                                        <img src={comment.profileURL} className="img-fluid" alt="Profile"/>
-                                    </div>
-                                    <div className="col col-sm-8">
-                                        <div className="card-body">
-                                            <div className="card-title clearfix">
-                                                <span className="float-left px-2 py-1">{comment.userName} @ {comment.productName}</span>
-                                                <span className="float-right text-muted px-2 py-1">{(new Date(comment.timeStamp)).toDateString()}</span>
-                                            </div>
-                                            <hr />
-                                            <p className="card-text text-left">{comment.text}</p>
-                                            {comment.replys && 
-                                                <button className="btn btn-primary" onClick={() => {this.loadReplys(index, comment.id)}}>
-                                                    {comment.replys.length} replys
-                                                </button>
-                                            }
-                                        </div>
-                                    </div>
-
-                                </div>
-                                
-                            </div>
-                            );}
-                        )}
+                        <ul className="list-group">
+                            {
+                                this.state.comments.map((comment, index) => {
+                                    return (
+                                        <li key={comment.id} className="list-group-item flex-column align-items-start">
+                                            <CommentPanel comment={comment} />
+                                        </li>
+                                        )
+                                })
+                            }
+                        </ul>
                         <p>{this.state.message}</p>
                     </div>
                 </div>

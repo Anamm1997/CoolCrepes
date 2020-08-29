@@ -9,3 +9,7 @@
     height: 100%;
     max-width: 450px;
 }
+
+.small-img {
+    height: 2.5rem !important;
+}
