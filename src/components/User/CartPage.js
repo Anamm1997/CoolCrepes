@@ -1,22 +1,28 @@
 import React from 'react';
-import { Table, Jumbotron, Container, Card, CardBody, CardTitle, Button } from 'reactstrap';
+import { Table, Jumbotron, Container, Card, CardBody, CardTitle, Button, Input,InputGroup } from 'reactstrap';
 import Fire from '../Fire';
+
 //change Test to this.props.userToken.id
 //change ref url to cartTest to test remove
-class CartPage extends React.Component {
+//Final should be something like this user/${this.props.userToken.id}/Cart
+//user/${this.props.userToken.id}/Cart/${e}
+//user/${this.props.userToken.id}/Cart/${item}/${quantity}
+const item = Fire.database().ref(`user/Test/Cart/`);
 
+class CartPage extends React.Component {
     constructor(props) {
         super(props);
         this.checkout = this.checkout.bind(this);
-        this.removeItem = this.removeItem.bind(this)
+        this.removeItem = this.removeItem.bind(this);
+        this.updateQuantity = this.updateQuantity.bind(this);
         this.state = {
-            itemsList: []
+            itemsList: [],
         };    
     }
 
     componentDidMount() {
         const firebaseList = [];
-        Fire.database().ref(`user/Test/Cart`).on('value',function (snapshot){
+        Fire.database().ref(`cartTest`).on('value',function (snapshot){
             let items = snapshot.val();
             for(let item in items){
                 firebaseList.push({item,...items[item]});
@@ -32,7 +38,7 @@ class CartPage extends React.Component {
     }
 
     removeItem(e){   
-        const item = Fire.database().ref(`user/Test/Cart/${e}`);
+        const item = Fire.database().ref(`cartTest/${e}`);
         item.remove().then(() => {
             // usersRef.delete().then(() => {
                 this.componentDidMount();
@@ -41,7 +47,18 @@ class CartPage extends React.Component {
                 console.error(error)
             });
     }
-
+    
+    updateQuantity(item,quantity,change){
+            if (change === "decrease" && quantity!=1){
+                quantity-=1;
+            }
+            else if (change === "increase"){
+                quantity+=1;
+            }
+            Fire.database().ref(`cartTest/${item}`).update({'quantity':quantity})
+            this.componentDidMount();
+        }
+    
     render() {
         return (
             <div>
@@ -65,6 +82,8 @@ class CartPage extends React.Component {
             <tbody>
 
             {this.state.itemsList.map((item,index)=>{
+            let itemPrice = parseFloat(item.price)*parseInt(item.quantity);
+            itemPrice = itemPrice.toFixed(2);
             return(
                 <tr>
                 <td className="flex-row">
@@ -72,8 +91,17 @@ class CartPage extends React.Component {
                 <div className="ml-3 text-dark font-weight-bold">{item.productName}</div>
                 </td>
 
-                <td className="align-middle">{item.quantity}</td>
-                <td className="align-middle">{item.price}</td>
+                <td className="align-middle">
+                <InputGroup className="d-flex justify-content-center">
+                          <Input type="button" value="-" className="minusButton btn btn-outline-danger col-2" onClick={() => {this.updateQuantity(item.item,item.quantity,"decrease")}} />
+                          
+                    <Input type="number" className="col-2 bg-white" value={item.quantity}  disabled="true"/>
+
+                        <Input type="button" value="+" className="btn btn-outline-success col-2"onClick={() => {this.updateQuantity(item.item,item.quantity,"increase")}} />
+                    </InputGroup>
+                </td>
+
+                <td className="align-middle">${itemPrice}</td>
 
                 <td className="align-middle"><a type="button" onClick={() => {this.removeItem(item.item)}}> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
