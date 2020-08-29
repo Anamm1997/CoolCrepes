@@ -15,7 +15,6 @@ class ProductsPage extends React.Component {
     
     retrieve(){
         this.componentDidMount()
-        console.log(this.state.productList);
     }
     
 	//What method to grab data from database?
@@ -23,6 +22,7 @@ class ProductsPage extends React.Component {
         let list = []
 		Fire.database().ref('productTest').on('value', function(snapshot) {
 			var pastries = snapshot.val();
+            console.log(pastries)
 			var keys = Object.keys(pastries);
 
 			for (var i = 0; i < keys.length; i++) {
@@ -64,14 +64,23 @@ class ProductsPage extends React.Component {
 
          {this.state.productList.map((item,index)=>{ 
              console.log(item)
+             console.log(item[0])
              return(
+
              	<tr>
              		<th scope='row'>1</th>
              		<td>{item}</td>
              		<td>{item.product}</td>
              		<td>{item.price}</td>
              	</tr>
-                 
+
+                 /*<div>
+            		<p>{item}</p>
+            		<p>Product: {item[0]}</p>
+            		<p>Price: {item[1]}</p>
+            		<p>Quantity: {item[2]}</p>
+                 </div>*/
+
          )})}
          			</tbody>
          			</Table>
