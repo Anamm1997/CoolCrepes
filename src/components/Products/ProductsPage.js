@@ -27,6 +27,19 @@ class ProductsPage extends React.Component {
 		super(props);
 		//methods
     this.retrieve = this.retrieve.bind(this);
+    this.state = {
+            productList: [],
+        };   
+	}
+    
+    retrieve(){
+        this.componentDidMount()
+        console.log(this.state.productList);
+    }
+    
+	//What method to grab data from database?
+	componentDidMount() {
+        let list = []
 		Fire.database().ref('productTest').on('value', function(snapshot) {
 			var pastries = snapshot.val();
 			var keys = Object.keys(pastries);
@@ -38,18 +51,16 @@ class ProductsPage extends React.Component {
 				var product = pastries[k].product;
 				var quantity = pastries[k].quantity;
 				var seller = pastries[k].seller;
-        var data = {
+        let data = [
           product, price, quantity, seller, description
-        }
+        ]
+        console.log(data)
+                list.push(data)
 			}
-			console.log(data)
 		})
-
-	}
-
-	//What method to grab data from database?
-	retrieve() {
-    return 'data'
+         this.setState({
+            productList : list,
+        });   
 	}
 
 
@@ -57,19 +68,21 @@ class ProductsPage extends React.Component {
 	//Learn react here to determine how to interact with page, display table, instead of standard HTML and JS.
     render() {
         return (
-          <React.Fragment>
             <div>
                <h1>ProductsPage</h1>
                 <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initialized filtering through the query params.</p>
 
                 <button onClick={()=>{ this.retrieve() }}> Button does nothing </button>
-                {this.retrieve()}
 
+         {this.state.productList.map((item,index)=>{ 
+             console.log(item)
+             return(
+                 <div>
+            <p>{item} {item.product} {item.price}</p>
+                 </div>
+         )})}
             </div>
-						<div>
-								<label className ='information'> hi</label>
-						</div>
-          </React.Fragment>
+
          );
     }
 }
