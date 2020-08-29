@@ -69,9 +69,9 @@ class ProductsPage extends React.Component {
 
              	<tr>
              		<th scope='row'>1</th>
-             		<td>{item}</td>
-             		<td>{item.product}</td>
-             		<td>{item.price}</td>
+             		<td>{item[0]}</td>
+             		<td>{item[1]}</td>
+             		<td>{item[2]}</td>
              	</tr>
 
                  /*<div>
