@@ -55,9 +55,11 @@ class ProductsPage extends React.Component {
              		<thead>
              			<tr>
              				<th>#</th>
-             				<th>item</th>
-             				<th>product</th>
-             				<th>price</th>
+             				<th>Product</th>
+             				<th>Price</th>
+             				<th>Quantity</th>
+             				<th>Seller</th>
+             				<th>Description</th>
              			</tr>
              		</thead>
              		<tbody>
@@ -72,6 +74,8 @@ class ProductsPage extends React.Component {
              		<td>{item[0]}</td>
              		<td>{item[1]}</td>
              		<td>{item[2]}</td>
+             		<td>{item[3]}</td>
+             		<td>{item[4]}</td>
              	</tr>
 
                  /*<div>
