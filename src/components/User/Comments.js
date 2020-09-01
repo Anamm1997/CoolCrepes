@@ -7,7 +7,6 @@ class Comments extends React.Component{
         super(props);
 
         this.commentRef = Fire.database().ref('commentTest');
-        this.productRef = Fire.database().ref('productTest');
         this.userRef = Fire.database().ref('user');
         
         this.state = {
@@ -15,42 +14,70 @@ class Comments extends React.Component{
             message: ''
         };
 
-        this.createComment = this.createComment.bind(this);
         this.loadComments = this.loadComments.bind(this);
         this.sortComments = this.sortComments.bind(this);
-        this.loadReplysHandler = this.loadReplysHandler.bind(this);
+        this.createReply = this.createReply.bind(this);
     }
 
-    createComment() {
-        let randNum = Math.floor(Math.random() * 100);
-        let comment = {
-            text: `Some Comment #${randNum}`,
-            userID: '-MFTSBN1m1w_IzeQAnOZ',
-            userName: 'Mahfuz Anam',
-            profileURL: "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Fanamm9510%40gmail.comicon_mountain.png?alt=media&token=b706ac65-a6c2-43e4-babc-cb585daa1a82",
-            productID: '-MFn-pgAHccnS8E5b_iC',
-            productName: "Pinapple",
-            replys: [
-                '-MFvSh6TzU_wAk7CxFne',
-                '-MFvSvnIcMRdwZ6ZDMqy'
-            ],
+    async createReply(comment, text) {
+        let userData = await this.userRef.child(this.props.userToken.id).once('value');
+        let user = userData.val();
+        
+        let reply = {
+            text: text,
+            userID: this.props.userToken.id,
+            userName: `${user.firstName} ${user.lastName}`,
+            profileURL: user.profileURL,
+            productID: comment.productID,
+            productName: comment.productName,
+            replys: [],
             timeStamp: Date.now()
-        }
+        };
 
-        let newComment = this.commentRef.push(comment, error => {
+        let newComment = this.commentRef.push(reply, error => {
             if(error) {
                 console.log(error);
             }
-            else {
-                console.log('Success');
-            }
-        })
+        });
 
-        console.log(newComment.path.pieces_[1]);
+        await this.updateComment(comment, newComment.key)
+        // await this.updateUser(this.props.userToken.id, user, newComment.key);
+
+        this.loadComments();
     }
 
-    async loadReplysHandler(index, id) {
-        console.log(this.state.comments[index]);  
+    async updateUser(userId, user, commentId) {
+        let commentList = user.comments;
+        if (commentList && commentList.length > 0) {
+            commentList.push(commentId);
+        }
+        else {
+            commentList = [commentId];
+        }
+
+
+        await this.userRef.child(userId).update({comments: commentList}, error => {
+            if(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    async updateComment(comment, replyId) {
+        let replyList = comment.replys;
+        if (replyList && replyList.length > 0) {
+            replyList.push(replyId);
+        }
+        else {
+            replyList = [replyId];
+        }
+
+
+        await this.commentRef.child(comment.id).update({replys: replyList}, error => {
+            if(error) {
+                console.log(error);
+            }
+        });
     }
 
     async retriveReplys(replys) {
@@ -66,36 +93,38 @@ class Comments extends React.Component{
                     data['replyComments'] = await this.retriveReplys(data.replys);
                 }
 
-                replyComments.push(data);
+                replyComments.push({
+                    ...data,
+                    id: replys[i] 
+                });
             }
         }
         return replyComments;
     }
 
-    async loadComments(snapshot) {
-        let comments = [];
-        let data = snapshot.val();
-        
-        if (data) {
-            for(let key in data) {
-                comments.push({
-                    ...data[key],
-                    id: key
-                });
-            }
-
-            for (let i = 0; i < comments.length; i++) {
-                comments[i]['replyComments'] = await this.retriveReplys(comments[i].replys);
-            }
-
-            this.setState({
-                comments: comments
+    loadComments() {
+        for (let i = 0; i < this.props.comments.length; i++) {
+            this.commentRef.child(this.props.comments[i]).once('value', snapshot => {
+                let data = snapshot.val();
+                if (data) {
+                    this.retriveReplys(data.replys).then(replyComments => {
+                        let comment = {
+                            ...data,
+                            replyComments: replyComments,
+                            id: snapshot.key
+                        };
+    
+                        this.setState(state => {
+                            let commentsList = state.comments;
+                            commentsList[i] = comment;
+    
+                            return {comments: commentsList};
+                        });
+                    });
+                }
             });
+            
         }
-        else {
-            this.setState({ message: 'Error in reading database.'});
-        }
-
     }
 
     sortByProducts(data) {
@@ -129,48 +158,34 @@ class Comments extends React.Component{
         });
     }
 
-    componentDidMount() {
-        this.commentRef.on('value', this.loadComments);
-    }
+    async componentDidMount() {
+        if(!this.props.comments || this.props.comments <= 0) return;
 
-    componentWillUnmount() {
-        this.commentRef.off('value', this.loadComments);
+        this.loadComments();
     }
 
     render() {
 
         return (
         <div>
-            {this.props.comments && this.props.comments.length > 0 ?
-                <ul>
-                    {this.props.comments.map((history, index) => {
-                        return (
-                            <li key={index}>
-                                {history}
-                            </li>
-                        )
-                    })}
-                </ul> 
-                :
+            {this.state.comments && this.state.comments.length > 0 ?
                 <div>
-                    <div>
-                        No comments avalible
-                        <button className="btn btn-primary" onClick={this.createComment}>Ceate Comment</button>
-                    </div>
-                    <div>
-                        <ul className="list-group">
-                            {
-                                this.state.comments.map((comment, index) => {
-                                    return (
-                                        <li key={comment.id} className="list-group-item flex-column align-items-start">
-                                            <CommentPanel comment={comment} />
-                                        </li>
-                                        )
-                                })
-                            }
-                        </ul>
-                        <p>{this.state.message}</p>
-                    </div>
+                    <ul className="list-group">
+                        {
+                            this.state.comments.map((comment, index) => {
+                                return (
+                                    <li key={comment.id} className="list-group-item flex-column align-items-start">
+                                        <CommentPanel comment={comment} submitReplyHandler={this.createReply}/>
+                                    </li>
+                                    )
+                            })
+                        }
+                    </ul>
+                    <p>{this.state.message}</p>
+                </div>
+                :
+                <div className="alert alert-primary" role="alert">
+                    No comment history avalible for user.
                 </div>
     
             }
