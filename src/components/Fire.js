@@ -1,16 +1,15 @@
 import firebase from 'firebase';
 import 'firebase/auth';
 
-//later use env stuff
 const config = {
-    apiKey: "AIzaSyA6RqCT2kc0uY4OnCI0tupEp1UWw9Gx1jE",
-    authDomain: "coolcrepe-d97ac.firebaseapp.com",
-    databaseURL: "https://coolcrepe-d97ac.firebaseio.com",
-    projectId: "coolcrepe-d97ac",
-    storageBucket: "coolcrepe-d97ac.appspot.com",
-    messagingSenderId: "1045869884126",
-    appId: "1:1045869884126:web:e17293ddeaa50b1854c84f",
-    measurementId: "G-X5X5GXFNW8"
+    apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASEURL,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+    appId: process.env.REACT_APP_FIREBASE_APPID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
   };
 
 const Fire = firebase.initializeApp(config)

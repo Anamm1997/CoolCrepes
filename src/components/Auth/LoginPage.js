@@ -25,7 +25,7 @@ class LoginPage extends React.Component {
     }
 
     submitLogin(e){
-//        e.preventDefault();
+        e.preventDefault();
 //        console.log(this.state.rememberMe)
 //        console.log(Fire.auth().Auth.Persistence.LOCAL)
 //        console.log(Fire.auth.Auth.Persistence.LOCAL)
@@ -37,12 +37,12 @@ class LoginPage extends React.Component {
 //                                   }`)
 //            .then(function() {
 //            return(
-//                Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
-//                    console.log("Login Sucess");
-//                    this.props.updateHandler();
-//                }).catch((error) => {
-//                    this.setState({message: error.message});
-//                }));
+                Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+                    console.log("Login Sucess");
+                    this.props.updateHandler();
+                }).catch((error) => {
+                    this.setState({message: error.message});
+                });
 //        }).catch(function(error) {
 //            console.log(error.code)
 //            console.log(error.message)
