@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import 'firebase/auth';
 
 //later use env stuff
 const config = {
@@ -13,5 +14,6 @@ const config = {
   };
 
 const Fire = firebase.initializeApp(config)
+//Fire.auth().setPersistence(Fire.auth.Auth.Persistence.SESSION);
 
 export default Fire; 
