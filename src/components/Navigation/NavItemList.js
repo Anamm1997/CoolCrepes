@@ -19,6 +19,11 @@ const NavItems = {
             name: "Featured",
             link: "/featured",
             class: "nav-link link-item"
+        },        
+        {
+            name: "Products",
+            link: "/products",
+            class: "nav-link link-item"
         },
         {
             name: "Login",
@@ -34,18 +39,18 @@ const NavItems = {
     ],
     userlinks: [
         {
+            name: "User",
+            link: "/user",
+            class: "dropdown-item"
+        },
+        {
+            name: "Sales",
+            link: "/sales",
+            class: "dropdown-item"
+        },
+        {
             name: "Cart",
             link: "/cart",
-            class: "dropdown-item"
-        },
-        {
-            name: "History",
-            link: "/history",
-            class: "dropdown-item"
-        },
-        {
-            name: "Settings",
-            link: "/settings",
             class: "dropdown-item"
         }
     ]

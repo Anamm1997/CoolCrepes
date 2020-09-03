@@ -8,7 +8,7 @@ import CheckoutModal from '../../components/CheckoutModal';
 //Final should be something like this user/${this.props.userToken.id}/Cart
 //user/${this.props.userToken.id}/Cart/${e}
 //user/${this.props.userToken.id}/Cart/${item}/${quantity}
-const item = Fire.database().ref(`user/Test/Cart/`);
+//const item = Fire.database().ref(`user/Test/Cart/`);
 
 class CartPage extends React.Component {
     constructor(props) {
