@@ -15,19 +15,20 @@
     background-color: #56BBEE;
 }
 
-.card-img{
+.cardImage{
     height: 50vh;  
 }
-.card-title{
+
+.cardTitle{
     font-size: 1.3em;
 }
 
-.card:hover{
+.cardHoverGradientColor:hover{
     cursor: pointer;
     text-decoration: none; 
 }
 
-.card:hover .card-body{
+.cardHoverGradientColor:hover .cardBodyHoverGradientColor{
     background: linear-gradient(90deg, rgba(184,78,245,1) 0%, rgba(246,127,136,1) 50%, rgba(0,168,255,1) 100%);
     color: white;
 }
@@ -40,6 +41,24 @@
     width: 36vh; 
     height: 200px !important;
     object-fit: cover;
+}
+
+.modalheaderAddtoCart {
+  color: #099700;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.minusButton {
+    z-index: 3;
 }
 
 .App {

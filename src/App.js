@@ -11,6 +11,7 @@ import UserPage from './components/User/UserPage'
 import CartPage from './components/User/CartPage'
 import SellerPage from './components/User/SellerPage';
 import ProductsPage from './components/Products/ProductsPage';
+import ThankYouForShoppingPage from './components/ThankYouForShoppingPage';
 import ForgotPasswordPage from './components/Auth/ForgotPasswordPage';
 import Fire from './components/Fire'
 import './App.css';
@@ -63,11 +64,13 @@ class App extends React.Component {
             <Switch>
               <Route path="/" component={HomePage} exact/>
               <Route path="/featured" component={FeaturedPage}/>
-              <Route path="/products" component={ProductsPage}/>
+              <Route path="/products" render={() => <ProductsPage updateHandler={this.validateUser} userToken={this.state.userToken}/>} />
               <Route path="/trending" component={TrendingPage}/>
 
               <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
               <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
+              
+              <Route path="/thanks" component={ThankYouForShoppingPage}/>
 
               <Route path="/password" component={ForgotPasswordPage}/>
               <Route path="/sales" component={SalesPage}/>
