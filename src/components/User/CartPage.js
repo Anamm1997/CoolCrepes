@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Jumbotron, Container, Card, CardBody, CardTitle, Button, Input,InputGroup } from 'reactstrap';
 import Fire from '../Fire';
+import CheckoutModal from '../../components/CheckoutModal';
 
 //change Test to this.props.userToken.id
 //change ref url to cartTest to test remove
@@ -17,11 +18,13 @@ class CartPage extends React.Component {
         this.updateQuantity = this.updateQuantity.bind(this);
         this.state = {
             itemsList: [],
+            checkout: false,
         };    
     }
 
     componentDidMount() {
         const firebaseList = [];
+
         Fire.database().ref(`cartTest`).on('value',function (snapshot){
             let items = snapshot.val();
             for(let item in items){
@@ -33,14 +36,14 @@ class CartPage extends React.Component {
         });
     }
 
-    checkout(){
-        alert("Thank you for Shopping");//change to modal later maybe
+    checkout(e){
+        //totalcost give them
+        this.setState({checkout:!this.state.checkout})
     }
 
     removeItem(e){   
         const item = Fire.database().ref(`cartTest/${e}`);
         item.remove().then(() => {
-            // usersRef.delete().then(() => {
                 this.componentDidMount();
                 console.log(e + ' successfully deleted!')
             }).catch(function(error) {
@@ -60,6 +63,7 @@ class CartPage extends React.Component {
         }
     
     render() {
+        let total = 0.00;
         return (
             <div>
             <Jumbotron fluid className="py-5">
@@ -84,6 +88,8 @@ class CartPage extends React.Component {
             {this.state.itemsList.map((item,index)=>{
             let itemPrice = parseFloat(item.price)*parseInt(item.quantity);
             itemPrice = itemPrice.toFixed(2);
+            total+=itemPrice;
+    
             return(
                 <tr>
                 <td className="flex-row">
@@ -114,12 +120,12 @@ class CartPage extends React.Component {
 </Table>
 <Card tag="a" onClick={this.checkout.bind(this)} className="cardHoverGradientColor col-lg-3 h-25 d-inline-block" style={{marginTop: "1.2%",padding:"0px"}}>
     <CardBody className="cardBodyHoverGradientColor">
-    <h3>Total : TotalCost</h3>
-<CardTitle className="cardTitle">Checkout</CardTitle>
+    <h3>Checkout</h3>
 </CardBody>
 </Card>
 </div>
 </div>
+<CheckoutModal purchase={this.state.checkout} purchased={this.checkout.bind(this)}/>
 </div>
 );
 }

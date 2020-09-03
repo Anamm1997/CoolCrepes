@@ -13,6 +13,7 @@ import UserHistoryPage from './components/User/UserHistoryPage';
 import UserSettingsPage from './components/User/UserSettingsPage';
 import SellerPage from './components/User/SellerPage';
 import ProductsPage from './components/Products/ProductsPage';
+import ThankYouForShoppingPage from './components/ThankYouForShoppingPage';
 import Fire from './components/Fire'
 import './App.css';
 
@@ -57,7 +58,8 @@ class App extends React.Component {
 
               <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
               <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
-
+              
+              <Route path="/thanks" component={ThankYouForShoppingPage}/>
               <Route path="/sales" component={SalesPage}/>
               <Route path="/user" component={UserPage}/>
               <Route path="/cart" component={CartPage}/>
