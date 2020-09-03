@@ -2,6 +2,7 @@ import React from 'react';
 import CheckoutModal from '../../components/CheckoutModal';
 import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { Redirect } from 'react-router'
+import Fire from '../Fire';
 
 class ProductsPage extends React.Component {
     constructor(props) {
@@ -9,11 +10,14 @@ class ProductsPage extends React.Component {
         this.toggle = this.toggle.bind(this);
         this.cartPage = this.cartPage.bind(this);
         this.purchased = this.purchased.bind(this);
+        this.retrieve = this.retrieve.bind(this);
         this.state = {
             modal:false,
             purchase: false,
             redirect: false,
-        };
+            productList: [],
+        };  
+
     }
     
     cartPage(){
@@ -28,6 +32,36 @@ class ProductsPage extends React.Component {
         this.child.componentWillMount()
         this.setState({purchase:!this.state.purchase})
         this.setState({modal:!this.state.modal})
+    }
+
+     retrieve(){
+        this.componentDidMount()
+    }
+    
+    componentDidMount() {
+        let list = []
+        Fire.database().ref('productTest').on('value', function(snapshot) {
+            var pastries = snapshot.val();
+            console.log(pastries)
+            var keys = Object.keys(pastries);
+
+            for (var i = 0; i < keys.length; i++) {
+                var k = keys[i];
+                var description = pastries[k].description;
+                var price = pastries[k].price;
+                var product = pastries[k].product;
+                var quantity = pastries[k].quantity;
+                var seller = pastries[k].seller;
+        let data = [
+          product, price, quantity, seller, description
+        ]
+        console.log(data)
+                list.push(data)
+            }
+        })
+         this.setState({
+            productList : list,
+        });   
     }
 
     render() {
