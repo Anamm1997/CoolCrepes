@@ -37,7 +37,6 @@ class CartPage extends React.Component {
     }
 
     checkout(e){
-        //totalcost give them
         this.setState({checkout:!this.state.checkout})
     }
 

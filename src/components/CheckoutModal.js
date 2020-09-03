@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import Fire from './Fire';
+import { Redirect } from 'react-router'
 
 class CheckoutModal extends React.Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class CheckoutModal extends React.Component {
         this.state = {
             currentCart:[],
             totalPrice:0,
+            redirect: false,
         }
     }
     
@@ -34,14 +36,22 @@ class CheckoutModal extends React.Component {
     }
     
     itemsPurchased(){
-        //add to purchaseTest
-        this.purchasesRef.child("cart").push(this.state.currentCart);
-        //remove cartTest, basically remove cart
-        this.cartRef.remove();
-        //this.props.history.push('/thanks');
+        if(this.state.totalPrice == 0){
+            alert("Your cart is empty")
+           }
+        else{
+            //add to purchaseTest
+            this.purchasesRef.child("cart").push(this.state.currentCart);
+            //remove cartTest, basically remove cart
+            this.cartRef.remove();
+            this.setState({redirect:!this.state.redirect})
+        }
     }
 
     render(){
+        if(this.state.redirect){
+            return <Redirect to='/thanks'/>;
+           }
         return(
             <Modal isOpen={this.props.purchase} toggle={this.props.purchased}>
             <ModalHeader className="modalheaderAddtoCart" toggle={this.props.purchased}>Total: ${this.state.totalPrice}</ModalHeader>
