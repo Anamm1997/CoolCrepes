@@ -1,10 +1,10 @@
 label{
     display: inline-block;
-    float: left;
     clear: left;
     width: 60%;
     text-align: right;
 }
+
 input{
   width: 350px;
 }

@@ -11,8 +11,7 @@ class AddProductPage extends React.Component {
       this.handleQuantityChange = this.handleQuantityChange.bind(this);
       this.handleSellerChange = this.handleSellerChange.bind(this);
       this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-      this.extractInfo = this.extractInfo.bind(this);
-
+      this.ExtractInfo = this.ExtractInfo.bind(this);
 
       this.state={
         Product:"",
@@ -39,29 +38,26 @@ class AddProductPage extends React.Component {
       this.setState({Description: e.target.value})
     }
 
-
-
-    extractInfo(){ //Also sends to firebase
+    ExtractInfo(){
       let Product = this.state.Product
       let Price = this.state.Price
       let Quantity = this.state.Quantity
       let Seller = this.state.Seller
       let Description = this.state.Description
       console.log(Product, Price, Quantity, Seller, Description)
-      let data = {
-        product: Product,
-        price: Price,
-        quantity: Quantity,
-        seller: Seller,
-        description: Description
-      }
-      Fire.database().ref('productTest').push(data)
-      .then(() => {
-        console.log(data)
+      Fire.database().ref('test').set(
+        {
+          product: Product,
+          price: Price,
+          quantity: Quantity,
+          seller: Seller,
+          description: Description
+        }
+      ).then(() => {
+        console.log("inserted")
       }).catch((error) => {
         console.log(error)
       })
-
     }
 
 
@@ -70,12 +66,48 @@ class AddProductPage extends React.Component {
           <React.Fragment>
             <h1>Add Product Page</h1>
             <div>
-              <label>Product Name <input className="ProductName"type="text" placeholder="Type Product Here" value={this.state.product} onChange={this.handleProductChange.bind(this)} /></label>
-              <label>Price <input className = "Price" type="text" placeholder="Amount in USD" value={this.state.price} onChange={this.handlePriceChange.bind(this)} /></label>
-              <label>Quantity <input className = "Quantity" type="text" placeholder="Number Available" value={this.state.quantity} onChange={this.handleQuantityChange.bind(this)} /></label>
-              <label>Seller <input className = "Seller" type="text" placeholder="Name" value={this.state.seller} onChange={this.handleSellerChange.bind(this)} /></label>
-              <label>Description <textarea className = "Description" type="text" placeholder="Description of Product" value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} /></label> {/*//textarea for multiple lines since description is going to be longer*/}
-              <label><button onClick={()=>{ this.extractInfo() }}> Add </button> </label>
+              <label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Product</span>
+                  </div>
+                  <input type="text" className="ProductName" class="form-control" placeholder="Type Product Here" aria-label="Username" aria-describedby="basic-addon1" value={this.state.product} onChange={this.handleProductChange.bind(this)}/>
+                </div>
+              </label>
+              <label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Price</span>
+                  </div>
+                  <input type="text" className = "Price" class="form-control" placeholder="Amount in USD" aria-label="Username" aria-describedby="basic-addon1" value={this.state.price} onChange={this.handlePriceChange.bind(this)}/>
+                </div>
+              </label>
+              <label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Quantity</span>
+                  </div>
+                  <input type="text" className = "Quantity" class="form-control" placeholder="Number Available" aria-label="Username" aria-describedby="basic-addon1" value={this.state.quantity} onChange={this.handleQuantityChange.bind(this)}/>
+                </div>
+              </label>
+              <label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Seller</span>
+                  </div>
+                  <input type="text" className = "Seller" class="form-control" placeholder="Name" aria-label="Username" aria-describedby="basic-addon1" value={this.state.seller} onChange={this.handleSellerChange.bind(this)}/>
+                </div>
+              </label>
+              <label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Description</span>
+                </div>
+                <textarea className = "Description" class="form-control" placeholder="Description of Product" aria-label="With textarea" value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} ></textarea>
+              </div>
+              </label>
+              
+              <label><button class="btn btn-primary" onClick={()=>{ this.ExtractInfo() }}> Add </button> </label>
             </div>
           </React.Fragment>
 
