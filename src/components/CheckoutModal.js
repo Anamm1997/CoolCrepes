@@ -6,31 +6,39 @@ class CheckoutModal extends React.Component {
     constructor(props) {
         super(props);   
         this.itemsPurchased = this.itemsPurchased.bind(this);
-        this.purchasesRef = Fire.database().ref('purchaseTest');
+        this.purchasesRef = Fire.database().ref('purchaseTest/Test');
+        this.cartRef = Fire.database().ref('cartTest');
         this.state = {
+            currentCart:[],
             totalPrice:0,
         }
     }
     
      componentDidMount() {
         var prices = 0;
+        const cartItems = [];
         Fire.database().ref(`cartTest`).on('value',function (snapshot){
             let items = snapshot.val();
             for(let item in items){
+                cartItems.push({item,...items[item]});
                 prices = parseFloat(prices) + parseFloat(items[item].price);
             }
         });
         prices = prices.toFixed(2);
         this.setState({
+            currentCart: {cartItems}
+        });
+        this.setState({
             totalPrice: prices
         });
-        console.log(this.state.totalPrice)
     }
     
     itemsPurchased(){
         //add to purchaseTest
-        //remove from cartTest
-        this.props.history.push('/thanks');
+        this.purchasesRef.child("cart").push(this.state.currentCart);
+        //remove cartTest, basically remove cart
+        this.cartRef.remove();
+        //this.props.history.push('/thanks');
     }
 
     render(){
