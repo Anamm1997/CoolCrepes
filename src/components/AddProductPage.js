@@ -1,6 +1,7 @@
 import React from 'react';
 import AddProduct from './Css/AddProduct.css'
 import Fire from './Fire';
+import acceptableFileTypes from './Shared/AcceptableTypes';
 
 class AddProductPage extends React.Component {
 
@@ -12,13 +13,17 @@ class AddProductPage extends React.Component {
       this.handleSellerChange = this.handleSellerChange.bind(this);
       this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
       this.ExtractInfo = this.ExtractInfo.bind(this);
+      this.UploadImageToStorage = this.uploadImageToStorage.bind(this);
+      this.handleChange = this.handleChange.bind(this);
+
 
       this.state={
         Product:"",
         Price:"",
         Quantity:"",
         Seller:"",
-        Description:""
+        Description:"",
+        image: ""
       }
     }
 
@@ -37,6 +42,22 @@ class AddProductPage extends React.Component {
     handleDescriptionChange(e){
       this.setState({Description: e.target.value})
     }
+    handleChange(e) {
+        if(e.target.name === 'image') {
+            if(!acceptableFileTypes.includes(e.target.files[0].type)) {
+                this.setState({
+                    image: "",
+                    message: "Invalid upload, please select another image (png or jpeg)"
+                });
+            }
+            else {
+                this.setState({ image: e.target.files[0]} );
+            }
+        }
+        else {
+            this.setState({ [e.target.name] : e.target.value });
+        }
+    }
 
     ExtractInfo(){
       let Product = this.state.Product
@@ -44,6 +65,7 @@ class AddProductPage extends React.Component {
       let Quantity = this.state.Quantity
       let Seller = this.state.Seller
       let Description = this.state.Description
+      let profileURL = this.uploadImageToStorage();
       console.log(Product, Price, Quantity, Seller, Description)
       Fire.database().ref('productTest').push(
         {
@@ -51,7 +73,8 @@ class AddProductPage extends React.Component {
           price: Price,
           quantity: Quantity,
           seller: Seller,
-          description: Description
+          description: Description,
+          profileURL: profileURL
         }
       ).then(() => {
         console.log("inserted")
@@ -60,6 +83,21 @@ class AddProductPage extends React.Component {
       })
     }
 
+    async uploadImageToStorage() {
+        if (this.state.image === "") {
+            // default profile picture
+            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e";
+        }
+
+        try {            
+            await Fire.storage().ref(`/profileImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
+    
+            return await Fire.storage().ref('profileImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
+        } catch (error) {
+            console.log(error);
+            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e"; 
+        }
+    }
 
     render() {
         return (
@@ -106,7 +144,12 @@ class AddProductPage extends React.Component {
                 <textarea className = "Description" class="form-control" placeholder="Description of Product" aria-label="With textarea" value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} ></textarea>
               </div>
               </label>
-              
+              <label>
+                <div className="custom-file">
+                  <input type="file" className="custom-file-input" name="image" onChange={this.handleChange} />
+                  <label className="custom-file-label">Profile Picture (Optional)</label>
+                </div>
+              </label>
               <label><button class="btn btn-primary" onClick={()=>{ this.ExtractInfo() }}> Add </button> </label>
             </div>
           </React.Fragment>
