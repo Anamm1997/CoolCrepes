@@ -44,7 +44,7 @@ class App extends React.Component {
   }
 
   getUserObjectId(uid) {
-    Fire.database().ref("user").orderByChild("id").equalTo(uid).ref.once('value', snapshot => {
+    Fire.database().ref("user").orderByChild("id").equalTo(uid).once('value', snapshot => {
       this.setState({ userToken: {...this.state.userToken, id: Object.keys(snapshot.val())[0] } });
     });
   }
