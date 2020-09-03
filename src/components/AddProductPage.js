@@ -86,16 +86,16 @@ class AddProductPage extends React.Component {
     async uploadImageToStorage() {
         if (this.state.image === "") {
             // default profile picture
-            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e";
+            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/productImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e";
         }
 
         try {            
-            await Fire.storage().ref(`/profileImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
+            await Fire.storage().ref(`/productImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
     
-            return await Fire.storage().ref('profileImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
+            return await Fire.storage().ref('productImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
         } catch (error) {
             console.log(error);
-            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/profileImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e"; 
+            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/productImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e"; 
         }
     }
 
