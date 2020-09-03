@@ -10,6 +10,7 @@ class ForgotPasswordPage extends React.Component {
         this.submitPasswordReset = this.submitPasswordReset.bind(this);
         this.state = {
             email:"",
+            errMessage:""
         };
     }
     
@@ -19,13 +20,14 @@ class ForgotPasswordPage extends React.Component {
 
     submitPasswordReset(e){
         e.preventDefault();
-
+        console.log(this.state.email)
         Fire.auth().sendPasswordResetEmail(this.state.email).then((u)=>{
+            this.setState({errMessage: ""});
             console.log("Email sent Success");
             alert("Please check you email")
             
         }).catch((error) => {
-            console.log(error.message);
+            this.setState({errMessage: error.message});
         });
     }
     
@@ -38,6 +40,7 @@ class ForgotPasswordPage extends React.Component {
                         <Input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange}/>
                     </FormGroup>
                     <Button type = "submit" className="btn-lg btn-block btn-light mb-3" >Send email</Button>
+                <p>{ this.state.errMessage }</p>
                 </Form>
         )
     }
