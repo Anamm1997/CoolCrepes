@@ -37,6 +37,7 @@ class CartPage extends React.Component {
 
     checkout(e){
         this.setState({checkout:!this.state.checkout})
+        this.child.componentWillMount()
     }
 
     removeItem(e){   
@@ -57,6 +58,7 @@ class CartPage extends React.Component {
                 quantity+=1;
             }
             Fire.database().ref(`user/${this.props.userToken.id}/cart/${item}`).update({'quantity':quantity})
+            this.child.componentWillMount()
             this.componentDidMount();
         }
     
@@ -120,7 +122,7 @@ class CartPage extends React.Component {
 </Card>
 </div>
 </div>
-<CheckoutModal purchase={this.state.checkout} purchased={this.checkout.bind(this)}/>
+<CheckoutModal onRef={ref => (this.child = ref)} propId={this.props.userToken.id} purchase={this.state.checkout} purchased={this.checkout.bind(this)}/>
 </div>
 );
 }

@@ -64,7 +64,7 @@ class App extends React.Component {
             <Switch>
               <Route path="/" component={HomePage} exact/>
               <Route path="/featured" component={FeaturedPage}/>
-              <Route path="/products" component={ProductsPage}/>
+              <Route path="/products" render={() => <ProductsPage updateHandler={this.validateUser} userToken={this.state.userToken}/>} />
               <Route path="/trending" component={TrendingPage}/>
 
               <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>

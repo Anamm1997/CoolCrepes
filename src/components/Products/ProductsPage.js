@@ -1,6 +1,7 @@
 import React from 'react';
 import CheckoutModal from '../../components/CheckoutModal';
 import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
+import { Redirect } from 'react-router'
 
 class ProductsPage extends React.Component {
     constructor(props) {
@@ -11,11 +12,12 @@ class ProductsPage extends React.Component {
         this.state = {
             modal:false,
             purchase: false,
+            redirect: false,
         };
     }
     
     cartPage(){
-        this.props.history.push('/cart');
+        this.setState({redirect:!this.state.redirect});
     }
 
     toggle(){
@@ -23,16 +25,21 @@ class ProductsPage extends React.Component {
     }
 
     purchased(){
+        this.child.componentWillMount()
         this.setState({purchase:!this.state.purchase})
         this.setState({modal:!this.state.modal})
     }
 
     render() {
+        if(this.state.redirect){
+            return <Redirect to='/cart'/>;
+           }
         return (
             <div>
-            <h1>ProductsPage</h1>
-            <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initilized filtering through the query params.</p>
-            <Button color="btn btn-light" onClick={this.toggle.bind(this)}>Add to Cart</Button>
+            {this.props.userToken ? 
+             (
+             <div>
+             <Button color="btn btn-light" onClick={this.toggle.bind(this)}>Add to Cart</Button>
 <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} >
     <ModalHeader className="modalheaderAddtoCart" toggle={this.toggle.bind(this)}>Product Name/Pic Added to Cart</ModalHeader>
 <ModalFooter className="modalfooterAddtoCart">
@@ -40,7 +47,15 @@ class ProductsPage extends React.Component {
 <Button color="warning" onClick={this.purchased.bind(this)}>Proceed to Checkout</Button>
 </ModalFooter>
 </Modal>
-<CheckoutModal purchase={this.state.purchase} purchased={this.purchased.bind(this)}/>
+             <CheckoutModal onRef={ref => (this.child = ref)} propId={this.props.userToken.id} purchase={this.state.purchase} purchased={this.purchased.bind(this)}/>
+                </div>)
+             :(
+            <div>
+            <h1>ProductsPage</h1>
+            <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initilized filtering through the query params.</p>
+</div>
+)
+}
 </div>
 );
 }
