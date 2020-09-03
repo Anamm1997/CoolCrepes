@@ -9,13 +9,11 @@ class LoginPage extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.submitLogin = this.submitLogin.bind(this);
-        this.handleCheckbox = this.handleCheckbox.bind(this);
         this.showPassword = this.showPassword.bind(this);
         this.state = {
             email:"",
             password:"",
             message:"",
-            rememberMe: false,
             hidden:true,
         };
     }
@@ -26,33 +24,14 @@ class LoginPage extends React.Component {
 
     submitLogin(e){
         e.preventDefault();
-//        console.log(this.state.rememberMe)
-//        console.log(Fire.auth().Auth.Persistence.LOCAL)
-//        console.log(Fire.auth.Auth.Persistence.LOCAL)
-//
-//        Fire.auth().setPersistence( `${
-//                                   this.state.rememberMe
-//                                   ? Fire.auth.Auth.Persistence.LOCAL
-//                                   : Fire.auth.Auth.Persistence.SESSION
-//                                   }`)
-//            .then(function() {
-//            return(
-                Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+        Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
                     console.log("Login Sucess");
                     this.props.updateHandler();
                 }).catch((error) => {
                     this.setState({message: error.message});
                 });
-//        }).catch(function(error) {
-//            console.log(error.code)
-//            console.log(error.message)
-//        });
     }
 
-    handleCheckbox(e) {
-        this.setState({ rememberMe: !(this.state.rememberMe) });
-    }
-    
     showPassword(e) {
         this.setState({ hidden: !(this.state.hidden) });
     }
@@ -79,9 +58,6 @@ class LoginPage extends React.Component {
             <Button className="btn-light p-0" onClick={this.showPassword}><img style={{width:'2.7rem', height:'2.4rem'}} src={this.state.hidden ? "https://img.icons8.com/nolan/64/privacy.png" :"https://img.icons8.com/nolan/64/password1.png"}/></Button>
             </InputGroup>
 
-            <Label className="float-left form-inline my-3">
-            
-            <Input type="checkbox" onChange={this.handleCheckbox}/>{' '}Remember me</Label>
             <a href="/password" className="float-right my-3">Forgot Password?</a>
 </FormGroup>            
 
