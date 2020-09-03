@@ -45,7 +45,7 @@ class AddProductPage extends React.Component {
       let Seller = this.state.Seller
       let Description = this.state.Description
       console.log(Product, Price, Quantity, Seller, Description)
-      Fire.database().ref('test').set(
+      Fire.database().ref('productTest').push(
         {
           product: Product,
           price: Price,
