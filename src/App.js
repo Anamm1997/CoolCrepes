@@ -11,6 +11,7 @@ import UserPage from './components/User/UserPage'
 import CartPage from './components/User/CartPage'
 import SellerPage from './components/User/SellerPage';
 import ProductsPage from './components/Products/ProductsPage';
+import ForgotPasswordPage from './components/Auth/ForgotPasswordPage';
 import Fire from './components/Fire'
 import './App.css';
 
@@ -68,6 +69,7 @@ class App extends React.Component {
               <Route path="/login" render={() => <LoginPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
               <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
 
+              <Route path="/password" component={ForgotPasswordPage}/>
               <Route path="/sales" component={SalesPage}/>
               <Route path="/seller" component={SellerPage}/>
 
