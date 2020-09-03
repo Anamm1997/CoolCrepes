@@ -8,7 +8,7 @@ class CheckoutModal extends React.Component {
         super(props);   
         this.itemsPurchased = this.itemsPurchased.bind(this);
         this.purchasesRef = Fire.database().ref('purchaseTest/Test');
-        this.cartRef = Fire.database().ref('cartTest');
+        console.log("id for real  "+this.props.userToken.id)
         this.state = {
             currentCart:[],
             totalPrice:0,
@@ -19,7 +19,7 @@ class CheckoutModal extends React.Component {
      componentDidMount() {
         var prices = 0;
         const cartItems = [];
-        Fire.database().ref(`cartTest`).on('value',function (snapshot){
+        Fire.database().ref(`user/${this.props.userToken.id}/cart`).on('value',function (snapshot){
             let items = snapshot.val();
             for(let item in items){
                 cartItems.push({item,...items[item]});
@@ -43,7 +43,7 @@ class CheckoutModal extends React.Component {
             //add to purchaseTest
             this.purchasesRef.child("cart").push(this.state.currentCart);
             //remove cartTest, basically remove cart
-            this.cartRef.remove();
+            Fire.database().ref(`user/${this.props.userToken.id}/cart`).remove();
             this.setState({redirect:!this.state.redirect})
         }
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Jumbotron, Container, Card, CardBody, CardTitle, Button, Input,InputGroup } from 'reactstrap';
+import { Table, Jumbotron, Container, Card, CardBody, Button, Input,InputGroup } from 'reactstrap';
 import Fire from '../Fire';
 import CheckoutModal from '../../components/CheckoutModal';
 
@@ -24,8 +24,7 @@ class CartPage extends React.Component {
 
     componentDidMount() {
         const firebaseList = [];
-
-        Fire.database().ref(`cartTest`).on('value',function (snapshot){
+        Fire.database().ref(`user/${this.props.userToken.id}/cart`).on('value',function (snapshot){
             let items = snapshot.val();
             for(let item in items){
                 firebaseList.push({item,...items[item]});
@@ -41,7 +40,7 @@ class CartPage extends React.Component {
     }
 
     removeItem(e){   
-        const item = Fire.database().ref(`cartTest/${e}`);
+        const item = Fire.database().ref(`user/${this.props.userToken.id}/cart/${e}`);
         item.remove().then(() => {
                 this.componentDidMount();
                 console.log(e + ' successfully deleted!')
@@ -57,21 +56,20 @@ class CartPage extends React.Component {
             else if (change === "increase"){
                 quantity+=1;
             }
-            Fire.database().ref(`cartTest/${item}`).update({'quantity':quantity})
+            Fire.database().ref(`user/${this.props.userToken.id}/cart/${item}`).update({'quantity':quantity})
             this.componentDidMount();
         }
     
     render() {
-        let total = 0.00;
         return (
             <div>
             <Jumbotron fluid className="py-5">
             <Container fluid>
-            <h1 class="display-3">Shopping Cart</h1>
+            <h1 className="display-3">Shopping Cart</h1>
             </Container>
             </Jumbotron>
-            <div class="container-fluid">
-            <div class="row">
+            <div className="container-fluid">
+            <div className="row">
             <Table className="col-lg-8 m-4">
             <thead>
             <tr>
@@ -87,13 +85,11 @@ class CartPage extends React.Component {
             {this.state.itemsList.map((item,index)=>{
             let itemPrice = parseFloat(item.price)*parseInt(item.quantity);
             itemPrice = itemPrice.toFixed(2);
-            total+=itemPrice;
-    
             return(
                 <tr>
                 <td className="flex-row">
                 <img src={item.imageURL} className="img-thumbnail shadow-sm" alt="sample image for now"/>
-                <div className="ml-3 text-dark font-weight-bold">{item.productName}</div>
+                <div className="ml-3 text-dark font-weight-bold">{item.item}</div>
                 </td>
 
                 <td className="align-middle">
