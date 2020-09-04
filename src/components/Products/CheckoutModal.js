@@ -36,6 +36,7 @@ class CheckoutModal extends React.Component {
     }
     
     itemsPurchased(){
+        console.log(this.state.totalPrice)
         if(this.state.totalPrice === 0){
             alert("Your cart is empty")
            }
