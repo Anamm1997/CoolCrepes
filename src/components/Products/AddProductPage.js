@@ -15,7 +15,6 @@ class AddProductPage extends React.Component {
       this.handleChange = this.handleChange.bind(this);
       this.toggleOptions = this.toggleOptions.bind(this);
 
-
       this.state={
         productName:"",
         price:"",
