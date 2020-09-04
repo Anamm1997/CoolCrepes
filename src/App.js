@@ -64,7 +64,7 @@ class App extends React.Component {
             <Navigation userToken={this.state.userToken}/>
             <Switch>
               <Route path="/" component={HomePage} exact/>
-              <Route path="/featured" component={FeaturedPage}/>
+              <Route path="/featured" render={() => <FeaturedPage userToken={this.state.userToken} />} exact />
               <Route path="/products" render={() => <ProductsPage updateHandler={this.validateUser} userToken={this.state.userToken}/>} />
               <Route path="/trending" component={TrendingPage}/>
 
@@ -75,7 +75,7 @@ class App extends React.Component {
               <Route path="/add" render={() => <AddProductPage userToken={this.state.userToken} />} exact/>
 
               <Route path="/password" component={ForgotPasswordPage}/>
-              <Route path="/sales" component={SalesPage}/>
+              <Route path="/sales" render={() => <SalesPage userToken={this.state.userToken} />} exact />
               <Route path="/seller" component={SellerPage}/>
 
               <Route path="/user" render={() => <UserPage updateHandler={this.validateUser} userToken={this.state.userToken} />}/>

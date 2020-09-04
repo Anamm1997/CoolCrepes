@@ -51,7 +51,7 @@ class CheckoutModal extends React.Component {
             console.log(purchasedCart)
             //add to purchase
             let userPurchases= (await Fire.database().ref(`user/${this.props.propId}`).once('value')).val().purchase;
-            let purchaseRef = Fire.database().ref(`user/${this.props.propId}/purchase`).push(purchasedCart)
+            let purchaseRef = Fire.database().ref(`purchase`).push(purchasedCart)
             if(!userPurchases) {userPurchases = []}
             userPurchases.push(purchaseRef.key);
             
