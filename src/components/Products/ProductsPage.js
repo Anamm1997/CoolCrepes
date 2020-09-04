@@ -29,22 +29,25 @@ class ProductsPage extends React.Component {
         this.setState({modal:!this.state.modal})
     }
     
-    add(items){
-        let newitem = {
-            'product': (items[0] == undefined) ? "":items[0],
-            'price':  (items[1]== undefined) ? "":items[1],
-            'quantity':  (items[2]== undefined) ? "":items[2],
-            'seller':  (items[3]== undefined) ? "":items[3],
-            'description':  (items[4]== undefined) ? "":items[4],
-            'image':  (items[5]== undefined) ? "":items[5],
+    add(items){//product, price, quantity, seller, description, image, k
+
+        console.log("ITEMSSS"+items)
+        let id = items[4];
+                console.log("id"+id)
+
+        let newItem = {
+            id:{
+                'productName':items[0],
+                'price':items[1],
+                'quantity':1,
+                'seller':items[2],
+                'imageURL':items[3]
+            }
         }
-        console.log(newitem)
-        Fire.database().ref(`user/${this.props.userToken.id}/cart`).push(newitem, error =>{
-            console.log(error)
-        })
+         Fire.database().ref(`user/${this.props.userToken.id}`).update({cart:newItem});
         this.toggle();
     }
-    
+
     purchased(){
         this.child.componentWillMount()
         this.setState({purchase:!this.state.purchase})
@@ -57,9 +60,8 @@ class ProductsPage extends React.Component {
     
     componentDidMount() {
         let list = []
-        Fire.database().ref('productTest').on('value', function(snapshot) {
+        Fire.database().ref('product').on('value', function(snapshot) {
             var pastries = snapshot.val();
-            console.log(pastries)
             var keys = Object.keys(pastries);
 
             for (var i = 0; i < keys.length; i++) {
@@ -67,11 +69,10 @@ class ProductsPage extends React.Component {
                 var description = pastries[k].description;
                 var price = pastries[k].price;
                 var product = pastries[k].product;
-                var quantity = pastries[k].quantity;
                 var seller = pastries[k].seller;
                 var image = pastries[k].imageURL;
         let data = [
-          product, price, quantity, seller, description, image
+          product, price, seller, description, image, k
         ]
         console.log(data)
                 list.push(data)
@@ -83,6 +84,7 @@ class ProductsPage extends React.Component {
     }
 
     render() {
+        console.log(this.state.productList)
         if(this.state.redirect){
             return <Redirect to='/cart'/>;
            }
@@ -122,7 +124,7 @@ class ProductsPage extends React.Component {
                     <td>
              <Button color="btn btn-light" onClick={()=> {this.add(item)}}>Add</Button>
 <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} >
-    <ModalHeader className="modalheaderAddtoCart" toggle={this.toggle.bind(this)}>{item[0]} Added to Cart</ModalHeader>
+    <ModalHeader className="modalheaderAddtoCart" toggle={this.toggle.bind(this)}>Product Added to Cart</ModalHeader>
 <ModalFooter className="modalfooterAddtoCart">
     <Button color="light" onClick={this.cartPage.bind(this)}>Cart</Button>{' '}
 <Button color="warning" onClick={this.purchased.bind(this)}>Proceed to Checkout</Button>

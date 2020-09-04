@@ -10,7 +10,6 @@ class AddProductPage extends React.Component {
       super(props);
       this.handleProductChange = this.handleProductChange.bind(this);
       this.handlePriceChange = this.handlePriceChange.bind(this);
-      this.handleQuantityChange = this.handleQuantityChange.bind(this);
       this.handleSellerChange = this.handleSellerChange.bind(this);
       this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
       this.ExtractInfo = this.ExtractInfo.bind(this);
@@ -21,7 +20,6 @@ class AddProductPage extends React.Component {
       this.state={
         Product:"",
         Price:"",
-        Quantity:"",
         Seller:"",
         Description:"",
         image: "",
@@ -35,9 +33,7 @@ class AddProductPage extends React.Component {
     handlePriceChange(e){
       this.setState({Price: e.target.value})
     }
-    handleQuantityChange(e){
-      this.setState({Quantity: e.target.value})
-    }
+    
     handleSellerChange(e){
       this.setState({Seller: e.target.value})
     }
@@ -68,15 +64,15 @@ class AddProductPage extends React.Component {
       let Seller = this.state.Seller
       let Description = this.state.Description
       let ImageURL = await this.uploadImageToStorage();
-      console.log(Product, Price, Quantity, Seller, Description)
-      Fire.database().ref('productTest').push(
+      console.log(Product, Price, Seller, Description)
+      Fire.database().ref('product').push(
         {
-          product: Product,
+          productName: Product,
           price: Price,
-          quantity: Quantity,
           seller: Seller,
           description: Description,
-          imageURL: ImageURL
+          imageURL: ImageURL,
+           comments: []
         }
       ).then(() => {
         console.log("inserted")
@@ -118,14 +114,6 @@ class AddProductPage extends React.Component {
                     <span class="input-group-text" id="basic-addon1">Price</span>
                   </div>
                   <input type="text" className = "Price" class="form-control" placeholder="Amount in USD" aria-label="Username" aria-describedby="basic-addon1" value={this.state.price} onChange={this.handlePriceChange.bind(this)}/>
-                </div>
-              </label>
-              <label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Quantity</span>
-                  </div>
-                  <input type="text" className = "Quantity" class="form-control" placeholder="Number Available" aria-label="Username" aria-describedby="basic-addon1" value={this.state.quantity} onChange={this.handleQuantityChange.bind(this)}/>
                 </div>
               </label>
               <label>

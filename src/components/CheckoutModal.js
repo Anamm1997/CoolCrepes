@@ -26,7 +26,6 @@ class CheckoutModal extends React.Component {
                 prices = parseFloat(prices) + (parseFloat(items[item].price) * parseFloat(items[item].quantity));
             }
         });
-         console.log(prices)
         prices = prices.toFixed(2);
         this.setState({
             currentCart: {cartItems}
@@ -34,7 +33,6 @@ class CheckoutModal extends React.Component {
         this.setState({
             totalPrice: prices
         });
-        console.log("total"+this.state.totalPrice)
     }
     
     itemsPurchased(){
