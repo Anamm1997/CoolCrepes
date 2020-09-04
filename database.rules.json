@@ -47,10 +47,9 @@
 
         "cart": {
           "$productID": {
-            ".validate": "root.child('product').child($productID).exists() && newData.hasChildren(['quantity', 'productName', 'imageURL', 'price', 'discount'])",
+            ".validate": "root.child('product').child($productID).exists() && newData.hasChildren(['quantity', 'productName', 'imageURL', 'price'])",
             "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
             "price": {".validate": "newData.isNumber() && newData.val() > 0"},
-          	"discount": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"},
             "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
             "imageURL": {".validate": "newData.isString()"},
             "$other": { ".validate": false }
@@ -64,98 +63,97 @@
     },
       
     "product": {
-      ".validate": "newData.hasChildren(['productName', 'price', 'description', 'discountPercent', 'imageURL', 'rating', 'desertType', 'isSelling', 'isFeatured', 'stockQuantity', 'timeStamp'])",
+      "$productID": {
+        ".validate": "newData.hasChildren(['productName', 'seller', 'price', 'description', 'discount', 'imageURL', 'isSelling', 'isFeatured', 'stockQuantity', 'timeStamp'])",
       
-      ".indexOn": ["timeStamp", "discountPercent", "price", "desertType"],
-      
-      "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
+        ".indexOn": ["timeStamp", "discountPercent", "price"],
         
-      "price": {".validate": "newData.isNumber() && newData.val() > 0"},
+        "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
+          
+        "seller": {".validate": "root.child('user/' + newData.val()).exists()"},
+          
+        "price": {".validate": "newData.isNumber() && newData.val() > 0"},
+          
+        "description": {".validate": "newData.isString() && newData.val().length <= 256"},
+          
+        "discount": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"},
+          
+        "imageURL": {".validate": "newData.isString()"},
+          
+        "comments": {
+          "$comment_id": {
+            ".validate": "root.child('comment/' + newData.val()).exists()"
+          }
+        },
+          
+        "isSelling": {".validate": "newData.isBoolean()"},
+          
+        "isFeatured": {".validate": "newData.isBoolean()"},
+          
+        "stockQuantity": {".validate": "newData.isNumber() && newData.val() >= 0"},
         
-      "description": {".validate": "newData.isString() && newData.val().length <= 256"},
-        
-      "discountPercent": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"},
-        
-      "imageURL": {".validate": "newData.isString()"},
-        
-      "comments": {
-        "$comment_id": {
-          ".validate": "root.child('comment/' + newData.val()).exists()"
-        }
-      },
-        
-      "rating": {
-        ".validate": "newData.hasChildren(['cumulativeRating', 'numberOfVotes'])",
-        "cumulativeRating": {".validate": "newData.isNumber() && newData.val() <= 0"},
-        "numberOfVotes": {".validate": "newData.isNumber() && newData.val() <= 0"},
-      	"$other": { ".validate": false }
-      },
-        
-      "desertType": {".validate": "newData.isString()"},
-        
-      "isSelling": {".validate": "newData.isBoolean()"},
-        
-      "isFeatured": {".validate": "newData.isBoolean()"},
-        
-      "stockQuantity": {".validate": "newData.isNumber() && newData.val() >= 0"},
-      
-      "timeStamp": {".validate": "newData.val() <= now"},
-        
-      "$other": { ".validate": false }
+        "timeStamp": {".validate": "newData.val() <= now"},
+          
+        "$other": { ".validate": false }
+      }
     },
       
     "comment": {
-      ".validate": "newData.hasChildren(['userID', 'productID', 'timeStamp', 'text', 'userName', 'profileURL', 'productName'])",
+      "$commentID": {
+        ".validate": "newData.hasChildren(['userID', 'productID', 'timeStamp', 'text', 'userName', 'profileURL', 'productName'])",
         
-      ".indexOn": ["userID", "productID", "timeStamp"],
-        
-      "text": {".validate": "newData.isString() && newData.val().length <= 256"},
-      
-      "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
-      
-      "userName": {".validate": "newData.isString()"},
-      
-      "profileURL": {".validate": "newData.isString()"},
-        
-      "productID": {".validate": "root.child('product/' + newData.val()).exists()"},
-        
-      "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
-        
-      "replys": {
-        "$reply_id": {
-          ".validate": "root.child('comment/' + newData.val()).exists()"
-        }
-      },
-      
-      "timeStamp": {".validate": "newData.val() <= now"},
-        
-      "$other": { ".validate": false }
+        ".indexOn": ["userID", "productID", "timeStamp"],
+
+        "text": {".validate": "newData.isString() && newData.val().length <= 256"},
+
+        "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
+
+        "userName": {".validate": "newData.isString()"},
+
+        "profileURL": {".validate": "newData.isString()"},
+
+        "productID": {".validate": "root.child('product/' + newData.val()).exists()"},
+
+        "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
+
+        "replys": {
+          "$reply_id": {
+            ".validate": "root.child('comment/' + newData.val()).exists()"
+          }
+        },
+
+        "timeStamp": {".validate": "newData.val() <= now"},
+
+        "$other": { ".validate": false }
+      }
     },
       
     "purchase": {
-      ".validate": "newData.hasChildren(['userID', 'cart', 'totalPrice', 'timeStamp'])",
+      "$purchaseID": {
+        ".validate": "newData.hasChildren(['userID', 'cart', 'totalPrice', 'timeStamp'])",
         
-      ".indexOn": ["userID", "timeStamp"],
-        
-      "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
-        
-			"cart": {
-          "$productID": {
-            ".validate": "root.child('product').child($productID).exists() && newData.hasChildren(['quantity', 'productName', 'imageURL', 'price', 'discount'])",
-            "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
-            "price": {".validate": "newData.isNumber() && newData.val() > 0"},
-          	"discount": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"},
-            "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
-            "imageURL": {".validate": "newData.isString()"},
-            "$other": { ".validate": false }
-          }
-        },
-        
-      "totalPrice": {".validate": "newData.isNumber() && newData.val() <= 0"},
-      
-      "timeStamp": {".validate": "newData.val() <= now"},
-        
-      "$other": { ".validate": false }
+        ".indexOn": ["userID", "timeStamp"],
+
+        "userID": {".validate": "root.child('user/' + newData.val()).exists()"},
+
+        "cart": {
+            "$productID": {
+              ".validate": "root.child('product').child($productID).exists() && newData.hasChildren(['quantity', 'productName', 'imageURL', 'price', 'discount'])",
+              "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
+              "price": {".validate": "newData.isNumber() && newData.val() > 0"},
+              "discount": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"},
+              "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
+              "imageURL": {".validate": "newData.isString()"},
+              "$other": { ".validate": false }
+            }
+          },
+
+        "totalPrice": {".validate": "newData.isNumber() && newData.val() <= 0"},
+
+        "timeStamp": {".validate": "newData.val() <= now"},
+
+        "$other": { ".validate": false }
+      }
     }
   }
 }

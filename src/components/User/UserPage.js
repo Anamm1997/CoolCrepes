@@ -75,11 +75,9 @@ class UserPage extends React.Component {
                                 this.state.selectedPanel === 'settings' ? 
                                     <UserSetting userToken={this.props.userToken} userInfoHandler={this.getUserInfo} updateHandler={this.updateParent}/> :
                                 this.state.selectedPanel === 'history' ?
-                                    // <PurchaseHistory userToken={this.props.userToken} purchases={this.state.purchases}/> :
-                                    <PurchaseHistory userToken={this.props.userToken} purchases={['-Mkafih-34-5', '-Mbafre-35-24']}/> :
+                                    <PurchaseHistory userToken={this.props.userToken} purchases={this.state.purchases}/> :
                                 this.state.selectedPanel === 'comments' ?
-                                    // <Comments userToken={this.props.userToken} comments={this.state.comments} /> :
-                                    <Comments userToken={this.props.userToken} comments={['-MFvT9FlozjAITEmNO1o', '-MFvTNa6rp1z8pdM6UL3', '-MG9cqePkeTXSnANANom']} /> :
+                                    <Comments userToken={this.props.userToken} comments={this.state.comments} /> :
 
                                     <h3>{this.state.selectedPanel} not implemented</h3>
                             }

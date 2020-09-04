@@ -6,7 +6,7 @@ class Comments extends React.Component{
     constructor(props) {
         super(props);
 
-        this.commentRef = Fire.database().ref('commentTest');
+        this.commentRef = Fire.database().ref('comment');
         this.userRef = Fire.database().ref('user');
         
         this.state = {

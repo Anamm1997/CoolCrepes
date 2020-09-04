@@ -19,7 +19,12 @@ const NavItems = {
             name: "Featured",
             link: "/featured",
             class: "nav-link link-item"
-        },        
+        },
+        {
+            name: "AddProduct",
+            link: "/add",
+            class: "nav-link link-item"
+        },
         {
             name: "Products",
             link: "/products",

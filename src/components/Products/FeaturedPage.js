@@ -4,7 +4,7 @@ import { Redirect } from 'react-router'
 import Fire from '../Fire';
 import { Table, Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 
-class ProductsPage extends React.Component {
+class FeaturedPage extends React.Component {
     constructor(props) {
         super(props);
         this.toggle = this.toggle.bind(this);
@@ -66,7 +66,9 @@ class ProductsPage extends React.Component {
         let data = [];
 
         for(let key in pastries) {
-            data.push({id: key, ...pastries[key]});
+            if(pastries[key].isFeatured === true){
+                data.push({id: key, ...pastries[key]});
+            }
         }
 
         this.setState({
@@ -202,4 +204,4 @@ class ProductsPage extends React.Component {
 }
 }
 
-export default ProductsPage;
+export default FeaturedPage;

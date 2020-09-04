@@ -2,16 +2,17 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Navigation from './components/Navigation/Navigation'
-import FeaturedPage from './components/FeaturedPage'
+import FeaturedPage from './components/Products/FeaturedPage'
 import LoginPage from './components/Auth/LoginPage'
 import RegisterPage from './components/Auth/RegisterPage'
-import SalesPage from "./components/SalesPage"
-import TrendingPage from "./components/TrendingPage"
+import AddProductPage from './components/Products/AddProductPage'
+import SalesPage from "./components/Products/SalesPage"
+import TrendingPage from "./components/Products/TrendingPage"
 import UserPage from './components/User/UserPage'
 import CartPage from './components/User/CartPage'
 import SellerPage from './components/User/SellerPage';
 import ProductsPage from './components/Products/ProductsPage';
-import ThankYouForShoppingPage from './components/ThankYouForShoppingPage';
+import ThankYouForShoppingPage from './components/Products/ThankYouForShoppingPage';
 import ForgotPasswordPage from './components/Auth/ForgotPasswordPage';
 import Fire from './components/Fire'
 import './App.css';
@@ -63,7 +64,7 @@ class App extends React.Component {
             <Navigation userToken={this.state.userToken}/>
             <Switch>
               <Route path="/" component={HomePage} exact/>
-              <Route path="/featured" component={FeaturedPage}/>
+              <Route path="/featured" render={() => <FeaturedPage userToken={this.state.userToken} />} exact />
               <Route path="/products" render={() => <ProductsPage updateHandler={this.validateUser} userToken={this.state.userToken}/>} />
               <Route path="/trending" component={TrendingPage}/>
 
@@ -71,9 +72,10 @@ class App extends React.Component {
               <Route path="/register" render={() => <RegisterPage updateHandler={this.validateUser} userToken={this.state.userToken} />} exact/>
               
               <Route path="/thanks" component={ThankYouForShoppingPage}/>
+              <Route path="/add" render={() => <AddProductPage userToken={this.state.userToken} />} exact/>
 
               <Route path="/password" component={ForgotPasswordPage}/>
-              <Route path="/sales" component={SalesPage}/>
+              <Route path="/sales" render={() => <SalesPage userToken={this.state.userToken} />} exact />
               <Route path="/seller" component={SellerPage}/>
 
               <Route path="/user" render={() => <UserPage updateHandler={this.validateUser} userToken={this.state.userToken} />}/>

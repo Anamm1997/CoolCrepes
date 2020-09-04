@@ -55,7 +55,7 @@ class LoginPage extends React.Component {
             <InputGroup>
             <Input type={this.state.hidden ? 'password' : 'text'} name = "password" placeholder="Password"value={this.state.password} onChange={this.handleChange}/>
             
-            <Button className="btn-light p-0" onClick={this.showPassword}><img style={{width:'2.7rem', height:'2.4rem'}} src={this.state.hidden ? "https://img.icons8.com/nolan/64/privacy.png" :"https://img.icons8.com/nolan/64/password1.png"}/></Button>
+            <Button className="btn-light p-0" onClick={this.showPassword}><img alt="show password" style={{width:'2.7rem', height:'2.4rem'}} src={this.state.hidden ? "https://img.icons8.com/nolan/64/privacy.png" :"https://img.icons8.com/nolan/64/password1.png"}/></Button>
             </InputGroup>
 
             <a href="/password" className="float-right my-3">Forgot Password?</a>

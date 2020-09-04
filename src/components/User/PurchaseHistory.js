@@ -6,7 +6,7 @@ class PurchaseHistory extends React.Component {
     constructor(props) {
         super(props);
 
-        this.purchasesRef = Fire.database().ref('purchaseTest');
+        this.purchasesRef = Fire.database().ref('purchase');
         this.userRef = Fire.database().ref('user');
         
         this.state = {
