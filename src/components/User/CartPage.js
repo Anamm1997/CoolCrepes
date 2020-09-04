@@ -3,13 +3,6 @@ import { Table, Jumbotron, Container, Card, CardBody, Input,InputGroup } from 'r
 import Fire from '../Fire';
 import CheckoutModal from '../Products/CheckoutModal';
 
-//change Test to this.props.userToken.id
-//change ref url to cartTest to test remove
-//Final should be something like this user/${this.props.userToken.id}/Cart
-//user/${this.props.userToken.id}/Cart/${e}
-//user/${this.props.userToken.id}/Cart/${item}/${quantity}
-//const item = Fire.database().ref(`user/Test/Cart/`);
-
 class CartPage extends React.Component {
     constructor(props) {
         super(props);
@@ -51,6 +44,7 @@ class CartPage extends React.Component {
     }
     
     updateQuantity(item,quantity,change){
+        console.log(item)
             if (change === "decrease" && quantity !== 1){
                 quantity-=1;
             }
@@ -91,7 +85,7 @@ class CartPage extends React.Component {
                 <tr>
                 <td className="flex-row">
                 <img src={item.imageURL} className="img-thumbnail shadow-sm" alt="sample for now"/>
-                <div className="ml-3 text-dark font-weight-bold">{item.item}</div>
+                <div className="ml-3 text-dark font-weight-bold">{item.productName}</div>
                 </td>
 
                 <td className="align-middle">

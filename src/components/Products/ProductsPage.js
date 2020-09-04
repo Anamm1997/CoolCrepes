@@ -20,10 +20,10 @@ class ProductsPage extends React.Component {
             purchase: false,
             redirect: false,
             productList: [],
-        };  
+        };
 
     }
-    
+
     cartPage(){
         this.setState({redirect:!this.state.redirect});
     }
@@ -31,7 +31,7 @@ class ProductsPage extends React.Component {
     toggle(){
         this.setState({modal:!this.state.modal})
     }
-    
+
     add(items){
         let quantity = 1;
         if(Object.keys(this.state.userCart).includes(items.id)) {
@@ -48,7 +48,7 @@ class ProductsPage extends React.Component {
             discount: items.discount
         };
         console.log(cartItem);
-         
+
         Fire.database().ref(`user/${this.props.userToken.id}`).update({cart: cartItem}, error => {
             if(error) {
                 console.log(error);
@@ -65,14 +65,14 @@ class ProductsPage extends React.Component {
     retrievePastries(snapshot) {
         var pastries = snapshot.val();
         let data = [];
-        
+
         for(let key in pastries) {
             data.push({id: key, ...pastries[key]});
         }
 
         this.setState({
             productList : data,
-        }); 
+        });
     }
 
     readUserCart(snapshot) {
@@ -85,7 +85,7 @@ class ProductsPage extends React.Component {
         }
 
     }
-    
+
     componentDidMount() {
         Fire.database().ref('product').on('value', this.retrievePastries);   
         if(this.props.userToken) {
@@ -94,7 +94,7 @@ class ProductsPage extends React.Component {
     }
 
     componentWillUnmount() {
-        Fire.database().ref('product').off('value', this.retrievePastries);   
+        Fire.database().ref('product').off('value', this.retrievePastries);
         if(this.props.userToken) {
             Fire.database().ref(`user/${this.props.userToken.id}`).off('value', this.readUserCart);
         }
@@ -106,11 +106,11 @@ class ProductsPage extends React.Component {
            }
         return (
             <div>
-            {this.props.userToken ? 
+            {this.props.userToken ?
              (
              <div>
             <h1>ProductsPage</h1>
-                <button onClick={()=>{ this.retrieve() }}> Display </button>
+                
                 <Table>
              		<thead>
              			<tr>
@@ -151,7 +151,7 @@ class ProductsPage extends React.Component {
                                         <CheckoutModal onRef={ref => (this.child = ref)} propId={this.props.userToken.id} purchase={this.state.purchase} purchased={this.purchased.bind(this)}/>
                                     </td>
                                     </tr>
-    
+
                                 )
                             }
                         }
@@ -163,7 +163,7 @@ class ProductsPage extends React.Component {
              :(
             <div>
             <h1>ProductsPage</h1>
-                <button onClick={()=>{ this.retrieve() }}> Display </button>
+
                 <Table>
              		<thead>
              			<tr>
@@ -179,7 +179,7 @@ class ProductsPage extends React.Component {
              		</thead>
              		<tbody>
 
-         {this.state.productList.map((item,index)=>{ 
+         {this.state.productList.map((item,index)=>{
              return(
 
                 <tr key={item.id}>
