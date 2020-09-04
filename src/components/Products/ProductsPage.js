@@ -68,7 +68,7 @@ class ProductsPage extends React.Component {
                 var k = keys[i];
                 var description = pastries[k].description;
                 var price = pastries[k].price;
-                var product = pastries[k].product;
+                var product = pastries[k].productName;
                 var seller = pastries[k].seller;
                 var image = pastries[k].imageURL;
         let data = [
@@ -115,12 +115,12 @@ class ProductsPage extends React.Component {
 
              	<tr>
              		<th scope='row'>1</th>
-                    <td><img src={item[5]} className="img-thumbnail shadow-sm" alt="sample image for now"/></td>
+                    <td><img src={item[4]} className="img-thumbnail shadow-sm" alt="sample image for now"/></td>
              		<td>{item[0]}</td>
              		<td>{item[1]}</td>
+             		<td></td>
              		<td>{item[2]}</td>
              		<td>{item[3]}</td>
-             		<td>{item[4]}</td>
                     <td>
              <Button color="btn btn-light" onClick={()=> {this.add(item)}}>Add</Button>
 <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} >
@@ -163,12 +163,12 @@ class ProductsPage extends React.Component {
 
              	<tr>
              		<th scope='row'>1</th>
-                    <td><img src={item[5]} className="img-thumbnail shadow-sm" alt="sample image for now"/></td>
+                    <td><img src={item[4]} className="img-thumbnail shadow-sm" alt="sample image for now"/></td>
              		<td>{item[0]}</td>
              		<td>{item[1]}</td>
+             		<td></td>
              		<td>{item[2]}</td>
              		<td>{item[3]}</td>
-             		<td>{item[4]}</td>
              	</tr>
 
          )})}
