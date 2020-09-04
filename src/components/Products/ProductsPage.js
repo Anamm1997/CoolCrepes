@@ -39,7 +39,6 @@ class ProductsPage extends React.Component {
         }
 
         let cartItem = {...this.state.userCart};
-        console.log(this.state.userCart);
         cartItem[items.id] = {
             quantity: quantity,
             price: items.price,
@@ -47,7 +46,6 @@ class ProductsPage extends React.Component {
             imageURL: items.imageURL,
             discount: items.discount
         };
-        console.log(cartItem);
          
         Fire.database().ref(`user/${this.props.userToken.id}`).update({cart: cartItem}, error => {
             if(error) {
@@ -55,6 +53,7 @@ class ProductsPage extends React.Component {
             }
         });
         this.toggle();
+        this.child.componentWillMount()
     }
 
     purchased(){

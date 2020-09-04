@@ -44,7 +44,6 @@ class CartPage extends React.Component {
     }
     
     updateQuantity(item,quantity,change){
-        console.log(item)
             if (change === "decrease" && quantity !== 1){
                 quantity-=1;
             }
@@ -79,7 +78,11 @@ class CartPage extends React.Component {
             <tbody>
 
             {this.state.itemsList.map((item,index)=>{
-            let itemPrice = parseFloat(item.price)*parseInt(item.quantity);
+            let discount = 1-item.discount; 
+            if (discount === 0) {
+                discount = 1;
+            }
+            let itemPrice = parseFloat(item.price)*parseInt(item.quantity)*parseFloat(discount);
             itemPrice = itemPrice.toFixed(2);
             return(
                 <tr>
