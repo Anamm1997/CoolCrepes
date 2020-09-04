@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckoutModal from '../../components/CheckoutModal';
+import CheckoutModal from './CheckoutModal';
 import { Redirect } from 'react-router'
 import Fire from '../Fire';
 import { Table, Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';

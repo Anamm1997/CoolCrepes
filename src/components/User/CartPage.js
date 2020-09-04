@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Jumbotron, Container, Card, CardBody, Button, Input,InputGroup } from 'reactstrap';
+import { Table, Jumbotron, Container, Card, CardBody, Input,InputGroup } from 'reactstrap';
 import Fire from '../Fire';
-import CheckoutModal from '../../components/CheckoutModal';
+import CheckoutModal from '../Products/CheckoutModal';
 
 //change Test to this.props.userToken.id
 //change ref url to cartTest to test remove
@@ -51,7 +51,7 @@ class CartPage extends React.Component {
     }
     
     updateQuantity(item,quantity,change){
-            if (change === "decrease" && quantity!=1){
+            if (change === "decrease" && quantity !== 1){
                 quantity-=1;
             }
             else if (change === "increase"){
@@ -90,7 +90,7 @@ class CartPage extends React.Component {
             return(
                 <tr>
                 <td className="flex-row">
-                <img src={item.imageURL} className="img-thumbnail shadow-sm" alt="sample image for now"/>
+                <img src={item.imageURL} className="img-thumbnail shadow-sm" alt="sample for now"/>
                 <div className="ml-3 text-dark font-weight-bold">{item.item}</div>
                 </td>
 
