@@ -139,7 +139,7 @@ class AddProductPage extends React.Component {
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon2">Price</span>
                       </div>
-                      <input type='number' min='0' name="price" className="form-control" placeholder="Amount in USD" aria-label="price" aria-describedby="basic-addon2" value={this.state.price} onChange={this.handleChange}/>
+                      <input type='number' min='0' step='0.01' name="price" className="form-control" placeholder="Amount in USD" aria-label="price" aria-describedby="basic-addon2" value={this.state.price} onChange={this.handleChange}/>
                     </div>
                     {!validPrice && this.state.price !== '' && <small className="text-danger">Price must be greater than $0.00.</small>}
                 </div>
@@ -149,7 +149,7 @@ class AddProductPage extends React.Component {
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon3">Discount</span>
                       </div>
-                      <input type='number' min='0' max='1' name="discount" className="form-control" placeholder="Percent Discount" aria-label="discount" aria-describedby="basic-addon3" value={this.state.discount} onChange={this.handleChange}/>
+                      <input type='number' min='0' max='1' step='0.01' name="discount" className="form-control" placeholder="Percent Discount" aria-label="discount" aria-describedby="basic-addon3" value={this.state.discount} onChange={this.handleChange}/>
                     </div>
                     {!validDiscount && this.state.discount !== '' &&<small className="text-danger">Discount must be between 0 and 1.</small>}
                 </div>
@@ -159,7 +159,7 @@ class AddProductPage extends React.Component {
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon4">Quantity</span>
                       </div>
-                      <input type='number' min='0' name="stockQuantity" className="form-control" placeholder="Amount in stock" aria-label="quantity" aria-describedby="basic-addon4" value={this.state.stockQuantity} onChange={this.handleChange}/>
+                      <input type='number' min='0' step='1' name="stockQuantity" className="form-control" placeholder="Amount in stock" aria-label="quantity" aria-describedby="basic-addon4" value={this.state.stockQuantity} onChange={this.handleChange}/>
                     </div>
                     {!validQuantity && this.state.stockQuantity !== '' &&<small className="text-danger">Quantity must be greater than 0.</small>}
                 </div>
