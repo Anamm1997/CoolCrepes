@@ -60,19 +60,17 @@ class AddProductPage extends React.Component {
     async ExtractInfo(){
       let Product = this.state.Product
       let Price = this.state.Price
-      let Quantity = this.state.Quantity
       let Seller = this.state.Seller
       let Description = this.state.Description
       let ImageURL = await this.uploadImageToStorage();
-      console.log(Product, Price, Seller, Description)
+      console.log(Product, Price, Seller, Description,ImageURL)
       Fire.database().ref('product').push(
         {
-          productName: Product,
-          price: Price,
-          seller: Seller,
-          description: Description,
-          imageURL: ImageURL,
-           comments: []
+          "productName": Product,
+          "price": Price,
+          "seller": Seller,
+          "description": Description,
+          "imageURL": ImageURL,
         }
       ).then(() => {
         console.log("inserted")
