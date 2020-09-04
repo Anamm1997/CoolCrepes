@@ -29,19 +29,17 @@ class ProductsPage extends React.Component {
         this.setState({modal:!this.state.modal})
     }
     
-    add(items){//product, price, quantity, seller, description, image, k
-
+    add(items){
         console.log("ITEMSSS"+items)
-        let id = items[4];
-                console.log("id"+id)
+        let id = items[5];
+        console.log("id"+id)
 
         let newItem = {
             id:{
                 'productName':items[0],
                 'price':items[1],
                 'quantity':1,
-                'seller':items[2],
-                'imageURL':items[3]
+                'imageURL':items[4],
             }
         }
          Fire.database().ref(`user/${this.props.userToken.id}`).update({cart:newItem});
