@@ -52,15 +52,15 @@ class AddProductPage extends React.Component {
         }
     }
 
-    async ExtractInfo(){
+    async ExtractInfo(e){
+      e.preventDefault();
       let ImageURL = await this.uploadImageToStorage();
 
-      let userProductList = (await Fire.database().ref(`user/${this.props.userToken.id}/sales`).once('value')).val();
-      if(!userProductList) {
-        userProductList = [];
-      }
+//      let userProductList = (await Fire.database().ref(`user/${this.props.userToken.id}/sales`).once('value')).val();
+//      if(!userProductList) {
+//        userProductList = [];
+//      }
 
-      console.log(userProductList);
 
       let newProduct = {
         'productName': this.state.productName,
@@ -78,7 +78,7 @@ class AddProductPage extends React.Component {
 
       console.log(newProduct);
 
-      let productRef = Fire.database().ref('/product').push(newProduct, error => {
+      let productRef = Fire.database().ref('product').push(newProduct, error => {
         if(error) {
           console.log(error);
         }
@@ -88,8 +88,8 @@ class AddProductPage extends React.Component {
         }
       });
 
-      userProductList.push(productRef.key);
-      Fire.database().ref(`user/${this.props.userToken.id}`).update({sales: userProductList});
+//      userProductList.push(productRef.key);
+//      Fire.database().ref(`user/${this.props.userToken.id}`).update({sales: userProductList});
     }
 
     async uploadImageToStorage() {
@@ -122,7 +122,7 @@ class AddProductPage extends React.Component {
               {this.state.Product} added success, ready to be sold!
             </Alert>):""
             }
-            <form className="productForm">
+            <form className="productForm" onSubmit={this.ExtractInfo}>
               <div className="form-group">
                   <div className="input-group mb-3">
                     <div className="input-group-prepend">
