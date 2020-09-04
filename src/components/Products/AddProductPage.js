@@ -61,13 +61,6 @@ class AddProductPage extends React.Component {
     async ExtractInfo(){
       let ImageURL = await this.uploadImageToStorage();
 
-      let userProductList = (await Fire.database().ref(`user/${this.props.userToken.id}/sales`).once('value')).val();
-      if(!userProductList) {
-        userProductList = [];
-      }
-
-      console.log(userProductList);
-
       let newProduct = {
         'productName': this.state.productName,
         'seller': this.props.userToken.id,
@@ -82,9 +75,12 @@ class AddProductPage extends React.Component {
         'imageURL': ImageURL
       };
 
-      console.log(newProduct);
+      let userProductList = (await Fire.database().ref(`user/${this.props.userToken.id}/sales`).once('value')).val();
+      if(!userProductList) {
+        userProductList = [];
+      }
 
-      let productRef = Fire.database().ref('/product').push(newProduct, error => {
+      let productRef = Fire.database().ref('product').push(newProduct, error => {
         if(error) {
           console.log(error);
         }
