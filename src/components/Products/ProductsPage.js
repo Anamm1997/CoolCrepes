@@ -94,6 +94,5 @@ class ProductsPage extends React.Component {
 );
 }
 }
-//proceed to checkout button has no page currently, can add later
 
 export default ProductsPage;

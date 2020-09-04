@@ -2,6 +2,7 @@ import React from 'react';
 import AddProduct from './Css/AddProduct.css'
 import Fire from './Fire';
 import acceptableFileTypes from './Shared/AcceptableTypes';
+import { Alert } from 'reactstrap';
 
 class AddProductPage extends React.Component {
 
@@ -23,7 +24,8 @@ class AddProductPage extends React.Component {
         Quantity:"",
         Seller:"",
         Description:"",
-        image: ""
+        image: "",
+        uploadProduct: false,
       }
     }
 
@@ -59,13 +61,13 @@ class AddProductPage extends React.Component {
         }
     }
 
-    ExtractInfo(){
+    async ExtractInfo(){
       let Product = this.state.Product
       let Price = this.state.Price
       let Quantity = this.state.Quantity
       let Seller = this.state.Seller
       let Description = this.state.Description
-      let profileURL = this.uploadImageToStorage();
+      let ImageURL = await this.uploadImageToStorage();
       console.log(Product, Price, Quantity, Seller, Description)
       Fire.database().ref('productTest').push(
         {
@@ -74,10 +76,11 @@ class AddProductPage extends React.Component {
           quantity: Quantity,
           seller: Seller,
           description: Description,
-          profileURL: profileURL
+          imageURL: ImageURL
         }
       ).then(() => {
         console.log("inserted")
+          this.setState({uploadProduct : true})
       }).catch((error) => {
         console.log(error)
       })
@@ -87,22 +90,19 @@ class AddProductPage extends React.Component {
         if (this.state.image === "") {
             // default profile picture
             return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/productImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e";
-        }
-
-        try {            
-            await Fire.storage().ref(`/productImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
+        }            
+        await Fire.storage().ref(`/productImages/${this.state.email}${this.state.image.name}`).put(this.state.image);
     
-            return await Fire.storage().ref('productImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
-        } catch (error) {
-            console.log(error);
-            return "https://firebasestorage.googleapis.com/v0/b/coolcrepe-d97ac.appspot.com/o/productImages%2Ficon_mountain.png?alt=media&token=1c8b4dbf-e144-471a-9db7-3c32000f7b8e"; 
-        }
+        return await Fire.storage().ref('productImages').child(`${this.state.email}${this.state.image.name}`).getDownloadURL();
     }
 
     render() {
         return (
           <React.Fragment>
             <h1>Add Product Page</h1>
+             {this.state.uploadProduct ? (<Alert color="success">
+        {this.state.Product} added success, ready to be sold!
+      </Alert>):""}
             <div>
               <label>
                 <div class="input-group mb-3">
