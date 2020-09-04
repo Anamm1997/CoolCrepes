@@ -7,7 +7,7 @@ class CheckoutModal extends React.Component {
     constructor(props) {
         super(props);  
         this.itemsPurchased = this.itemsPurchased.bind(this);
-        this.purchasesRef = Fire.database().ref('purchaseTest/Test');
+        this.purchasesRef = Fire.database().ref(`user/${this.props.propId}/purchase`);
         this.state = {
             currentCart:[],
             totalPrice:0,
@@ -40,9 +40,13 @@ class CheckoutModal extends React.Component {
             alert("Your cart is empty")
            }
         else{
-            //add to purchaseTest
-            this.purchasesRef.child("cart").push(this.state.currentCart);
-            //remove cartTest, basically remove cart
+            //add to purchase
+            Fire.database().ref(`user/${this.props.propId}`).update({purchase: this.state.currentCart}, error => {
+            if(error) {
+                console.log(error);
+            }
+        });
+            //remove cart
             Fire.database().ref(`user/${this.props.propId}/cart`).remove();
             this.setState({redirect:!this.state.redirect})
         }
