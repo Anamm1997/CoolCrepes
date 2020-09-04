@@ -1,8 +1,8 @@
 import React from 'react';
 import CheckoutModal from '../../components/CheckoutModal';
-import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { Redirect } from 'react-router'
 import Fire from '../Fire';
+import { Table, Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 
 class ProductsPage extends React.Component {
     constructor(props) {
@@ -11,6 +11,7 @@ class ProductsPage extends React.Component {
         this.cartPage = this.cartPage.bind(this);
         this.purchased = this.purchased.bind(this);
         this.retrieve = this.retrieve.bind(this);
+        this.add = this.add.bind(this);
         this.state = {
             modal:false,
             purchase: false,
@@ -27,7 +28,23 @@ class ProductsPage extends React.Component {
     toggle(){
         this.setState({modal:!this.state.modal})
     }
-
+    
+    add(items){
+        let newitem = {
+            'product': (items[0] == undefined) ? "":items[0],
+            'price':  (items[1]== undefined) ? "":items[1],
+            'quantity':  (items[2]== undefined) ? "":items[2],
+            'seller':  (items[3]== undefined) ? "":items[3],
+            'description':  (items[4]== undefined) ? "":items[4],
+            'image':  (items[5]== undefined) ? "":items[5],
+        }
+        console.log(newitem)
+        Fire.database().ref(`user/${this.props.userToken.id}/cart`).push(newitem, error =>{
+            console.log(error)
+        })
+        this.toggle();
+    }
+    
     purchased(){
         this.child.componentWillMount()
         this.setState({purchase:!this.state.purchase})
@@ -52,8 +69,9 @@ class ProductsPage extends React.Component {
                 var product = pastries[k].product;
                 var quantity = pastries[k].quantity;
                 var seller = pastries[k].seller;
+                var image = pastries[k].imageURL;
         let data = [
-          product, price, quantity, seller, description
+          product, price, quantity, seller, description, image
         ]
         console.log(data)
                 list.push(data)
@@ -73,21 +91,88 @@ class ProductsPage extends React.Component {
             {this.props.userToken ? 
              (
              <div>
-             <Button color="btn btn-light" onClick={this.toggle.bind(this)}>Add to Cart</Button>
+            <h1>ProductsPage</h1>
+                <button onClick={()=>{ this.retrieve() }}> Display </button>
+                <Table>
+             		<thead>
+             			<tr>
+             				<th>#</th>
+                            <th>Image</th>
+             				<th>Product</th>
+             				<th>Price</th>
+             				<th>Quantity</th>
+             				<th>Seller</th>
+             				<th>Description</th>
+             				<th>Add to Cart</th>
+             			</tr>
+             		</thead>
+             		<tbody>
+
+         {this.state.productList.map((item,index)=>{ 
+             return(
+
+             	<tr>
+             		<th scope='row'>1</th>
+                    <td><img src={item[5]} className="img-thumbnail shadow-sm" alt="sample image for now"/></td>
+             		<td>{item[0]}</td>
+             		<td>{item[1]}</td>
+             		<td>{item[2]}</td>
+             		<td>{item[3]}</td>
+             		<td>{item[4]}</td>
+                    <td>
+             <Button color="btn btn-light" onClick={()=> {this.add(item)}}>Add</Button>
 <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} >
-    <ModalHeader className="modalheaderAddtoCart" toggle={this.toggle.bind(this)}>Product Name/Pic Added to Cart</ModalHeader>
+    <ModalHeader className="modalheaderAddtoCart" toggle={this.toggle.bind(this)}>{item[0]} Added to Cart</ModalHeader>
 <ModalFooter className="modalfooterAddtoCart">
     <Button color="light" onClick={this.cartPage.bind(this)}>Cart</Button>{' '}
 <Button color="warning" onClick={this.purchased.bind(this)}>Proceed to Checkout</Button>
 </ModalFooter>
 </Modal>
              <CheckoutModal onRef={ref => (this.child = ref)} propId={this.props.userToken.id} purchase={this.state.purchase} purchased={this.purchased.bind(this)}/>
-                </div>)
+                 </td>
+             	</tr>
+
+         )})}
+         			</tbody>
+         			</Table>
+            </div>
+             )
              :(
             <div>
             <h1>ProductsPage</h1>
-            <p>ProductsPage body content. Will have a list of products, have sorting and filtering options, initilized filtering through the query params.</p>
-</div>
+                <button onClick={()=>{ this.retrieve() }}> Display </button>
+                <Table>
+             		<thead>
+             			<tr>
+             				<th>#</th>
+                            <th>Image</th>
+             				<th>Product</th>
+             				<th>Price</th>
+             				<th>Quantity</th>
+             				<th>Seller</th>
+             				<th>Description</th>
+             				<th>Login to Add to Cart</th>
+             			</tr>
+             		</thead>
+             		<tbody>
+
+         {this.state.productList.map((item,index)=>{ 
+             return(
+
+             	<tr>
+             		<th scope='row'>1</th>
+                    <td><img src={item[5]} className="img-thumbnail shadow-sm" alt="sample image for now"/></td>
+             		<td>{item[0]}</td>
+             		<td>{item[1]}</td>
+             		<td>{item[2]}</td>
+             		<td>{item[3]}</td>
+             		<td>{item[4]}</td>
+             	</tr>
+
+         )})}
+         			</tbody>
+         			</Table>
+            </div>
 )
 }
 </div>
