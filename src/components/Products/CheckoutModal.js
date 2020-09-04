@@ -29,7 +29,7 @@ class CheckoutModal extends React.Component {
         let items = snapshot.val();
         let prices = 0;
         for(let item in items){
-            prices += (parseFloat(items[item].price) * parseInt(items[item].quantity));
+            prices += (parseFloat(items[item].price) * parseInt(items[item].quantity)*parseFloat(items[item].discount));
         }
         this.setState({
             currentCart: items,
