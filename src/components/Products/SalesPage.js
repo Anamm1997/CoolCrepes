@@ -66,7 +66,7 @@ class SalesPage extends React.Component {
         let data = [];
 
         for(let key in pastries) {
-            if(pastries[key].discount != 0){
+            if(pastries[key].discount !== 0){
                 data.push({id: key, ...pastries[key]});
             }
         }

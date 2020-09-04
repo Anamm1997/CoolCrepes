@@ -38,9 +38,9 @@ class CheckoutModal extends React.Component {
     }
     
     async itemsPurchased(){
-        if(this.state.totalPrice == 0){
+        if(this.state.totalPrice === 0){
             alert("Your cart is empty")
-           }
+        }
         else{
             let purchasedCart = {
                 cart: this.state.currentCart,
@@ -50,10 +50,20 @@ class CheckoutModal extends React.Component {
             }
             console.log(purchasedCart)
             //add to purchase
-            let userPurchases= (await Fire.database().ref(`user/${this.props.propId}`).once('value')).val().purchase;
-            let purchaseRef = Fire.database().ref(`purchase`).push(purchasedCart)
+            let userPurchases= (await Fire.database().ref(`user/${this.props.propId}/purchases`).once('value')).val();
+            let purchaseRef = Fire.database().ref(`purchase`).push(purchasedCart, error => {
+                if(error) {
+                    console.log(error);
+                }
+            });
             if(!userPurchases) {userPurchases = []}
             userPurchases.push(purchaseRef.key);
+
+            Fire.database().ref(`user/${this.props.propId}`).update({purchases: userPurchases}, error => {
+                if(error) {
+                    console.log(error);
+                }
+            });
             
             //remove cart
             Fire.database().ref(`user/${this.props.propId}/cart`).remove();
