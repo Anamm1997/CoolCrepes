@@ -125,7 +125,6 @@ class AddProductPage extends React.Component {
             }
             <form className="productForm">
               <div className="form-group">
-                <label>
                   <div className="input-group mb-3">
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="basic-addon1">Product</span>
@@ -133,11 +132,10 @@ class AddProductPage extends React.Component {
                     <input type="text" name="productName" className="form-control" placeholder="Type Product Name Here" aria-label="productName" aria-describedby="basic-addon1" value={this.state.product} onChange={this.handleChange}/>
                   </div>
                   {!validProductName && this.state.productName !== '' && <small className="text-danger">Product Name must be less than 64 characters.</small>}
-                </label>
               </div>
 
-                <div className="form-group">
-                  <label>
+              <div className="form-row">
+                <div className="form-group col-md-4">
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon2">Price</span>
@@ -145,12 +143,9 @@ class AddProductPage extends React.Component {
                       <input type='number' min='0' name="price" className="form-control" placeholder="Amount in USD" aria-label="price" aria-describedby="basic-addon2" value={this.state.price} onChange={this.handleChange}/>
                     </div>
                     {!validPrice && this.state.price !== '' && <small className="text-danger">Price must be greater than $0.00.</small>}
-                  </label>
                 </div>
 
-              <div className="form-row">
-                <div className="form-group col-md-6">
-                  <label>
+                <div className="form-group col-md-4">
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon3">Discount</span>
@@ -158,11 +153,9 @@ class AddProductPage extends React.Component {
                       <input type='number' min='0' max='1' name="discount" className="form-control" placeholder="Percent Discount" aria-label="discount" aria-describedby="basic-addon3" value={this.state.discount} onChange={this.handleChange}/>
                     </div>
                     {!validDiscount && this.state.discount !== '' &&<small className="text-danger">Discount must be between 0 and 1.</small>}
-                  </label>
                 </div>
 
-                <div className="form-group col-md-6">
-                  <label>
+                <div className="form-group col-md-4">
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon4">Quantity</span>
@@ -170,36 +163,30 @@ class AddProductPage extends React.Component {
                       <input type='number' min='0' name="stockQuantity" className="form-control" placeholder="Amount in stock" aria-label="quantity" aria-describedby="basic-addon4" value={this.state.stockQuantity} onChange={this.handleChange}/>
                     </div>
                     {!validQuantity && this.state.stockQuantity !== '' &&<small className="text-danger">Quantity must be greater than 0.</small>}
-                  </label>
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-group col-md-6">
-                  <label>
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon5">Start Selling</span>
                       </div>
-                      <input type="radio" name="isSelling" className="form-check-input" aria-label="selling" aria-describedby="basic-addon5" value={this.state.isSelling} onChange={this.toggleOptions}/>
+                      <input type="radio" name="isSelling" className="form-control" aria-label="selling" aria-describedby="basic-addon5" value={this.state.isSelling} onChange={this.toggleOptions}/>
                     </div>
-                  </label>
                 </div>
 
                 <div className="form-group col-md-6">
-                  <label>
                     <div className="input-group mb-3">
                       <div className="input-group-prepend">
                         <span className="input-group-text" id="basic-addon6">Start Featuring</span>
                       </div>
-                      <input type="radio" name="isFeatured" className="form-check-input" aria-label="featured" aria-describedby="basic-addon6" value={this.state.isFeatured} onChange={this.toggleOptions}/>
+                      <input type="radio" name="isFeatured" className="form-control" aria-label="featured" aria-describedby="basic-addon6" value={this.state.isFeatured} onChange={this.toggleOptions}/>
                     </div>
-                  </label>
                 </div>
               </div>
 
               <div className="form-group">
-                <label>
                   <div className="input-group">
                     <div className="input-group-prepend">
                       <span className="input-group-text">Description</span>
@@ -207,16 +194,13 @@ class AddProductPage extends React.Component {
                     <textarea name="description" className="form-control" placeholder="Description of Product" aria-label="With textarea" value={this.state.description} onChange={this.handleChange} ></textarea>
                   </div>
                   {!vaildDescription && this.state.description !== '' &&<small className="text-danger">Description must be less than 256 characters.</small>}
-                </label>
               </div>
 
               <div className="form-group">
-                <label>
                   <div className="custom-file justify-content-center">
                     <input type="file" className="custom-file-input" name="image" onChange={this.handleChange} />
                     <label className="custom-file-label">Product Picture</label>
                   </div>
-                </label>
               </div>
 
               <button type="submit" className="btn-lg btn-block btn-primary" disabled={!allowedToSubmit}>Add Product</button>
