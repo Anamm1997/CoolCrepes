@@ -14,6 +14,7 @@ class AddProductPage extends React.Component {
       this.UploadImageToStorage = this.uploadImageToStorage.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.toggleOptions = this.toggleOptions.bind(this);
+      this.submitProduct = this.submitProduct.bind(this);
 
       this.state={
         productName:"",
@@ -50,6 +51,11 @@ class AddProductPage extends React.Component {
         else {
             this.setState({ [e.target.name] : e.target.value });
         }
+    }
+
+    submitProduct(e) {
+      e.preventDefault();
+      this.ExtractInfo();
     }
 
     async ExtractInfo(){
@@ -90,6 +96,19 @@ class AddProductPage extends React.Component {
 
       userProductList.push(productRef.key);
       Fire.database().ref(`user/${this.props.userToken.id}`).update({sales: userProductList});
+
+      this.setState({
+        productName:"",
+        price:"",
+        description:"",
+        image: "",
+        discount: '',
+        isSelling: false,
+        isFeatured: false,
+        stockQuantity: '',
+        timeStamp: '',
+        uploadProduct: false,
+      });
     }
 
     async uploadImageToStorage() {
@@ -122,7 +141,7 @@ class AddProductPage extends React.Component {
               {this.state.Product} added success, ready to be sold!
             </Alert>):""
             }
-            <form className="productForm">
+            <form onSubmit={this.submitProduct} className="productForm">
               <div className="form-group">
                   <div className="input-group mb-3">
                     <div className="input-group-prepend">
