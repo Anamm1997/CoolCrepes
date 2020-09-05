@@ -91,7 +91,11 @@ class AddProductPage extends React.Component {
       });
 
       userProductList.push(productRef.key);
-      Fire.database().ref(`user/${this.props.userToken.id}`).update({sales: userProductList});
+      Fire.database().ref(`user/${this.props.userToken.id}`).update({sales: userProductList}, error => {
+        if(error) {
+          console.log(error);
+        }
+      });
 
       this.setState({
         productName:"",

@@ -46,15 +46,16 @@
         },
 
         "cart": {
-          "$productID": {
-            ".validate": "root.child('product').child($productID).exists() && newData.hasChildren(['quantity', 'productName', 'imageURL', 'price'])",
-            "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
-            "price": {".validate": "newData.isNumber() && newData.val() > 0"},
-            "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
-            "imageURL": {".validate": "newData.isString()"},
-            "$other": { ".validate": false }
-          }
-        },
+            "$productID": {
+              ".validate": "root.child('product').child($productID).exists() && newData.hasChildren(['quantity', 'productName', 'imageURL', 'price', 'discount'])",
+              "quantity": {".validate": "newData.isNumber() && newData.val() > 0"},
+              "price": {".validate": "newData.isNumber() && newData.val() > 0"},
+              "discount": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"},
+              "productName": {".validate": "newData.isString() && newData.val().length <= 64"},
+              "imageURL": {".validate": "newData.isString()"},
+              "$other": { ".validate": false }
+            }
+          },
           
       	"timeStamp": {".validate": "newData.val() <= now"},
 
@@ -148,7 +149,7 @@
             }
           },
 
-        "totalPrice": {".validate": "newData.isNumber() && newData.val() <= 0"},
+        "totalPrice": {".validate": "newData.isNumber() && newData.val() >= 0"},
 
         "timeStamp": {".validate": "newData.val() <= now"},
 

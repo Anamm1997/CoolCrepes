@@ -7,7 +7,7 @@ class CheckoutModal extends React.Component {
     constructor(props) {
         super(props);  
         this.itemsPurchased = this.itemsPurchased.bind(this);
-        this.purchasesRef = Fire.database().ref(`user/${this.props.propId}/purchase`);
+        this.purchasesRef = Fire.database().ref(`user/${this.props.propId}/purchases`);
         this.GetCart = this.GetCart.bind(this);
         this.state = {
             currentCart:[],

@@ -47,13 +47,13 @@ class ProductsPage extends React.Component {
             discount: items.discount
         };
          
+        console.log(cartItem);
         Fire.database().ref(`user/${this.props.userToken.id}`).update({cart: cartItem}, error => {
             if(error) {
                 console.log(error);
             }
         });
         this.toggle();
-        this.child.componentWillMount()
     }
 
     purchased(){
@@ -102,6 +102,10 @@ class ProductsPage extends React.Component {
     render() {
         if(this.state.redirect){
             return <Redirect to='/cart'/>;
+           }
+           if(!this.props.userToken) {
+            return <Redirect to='/login'/>;
+
            }
         return (
             <div>
